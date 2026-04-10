@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.pnpm-store/
+
+taro-demo/dist/
+taro-demo/.temp/
+taro-demo/.cache/
+
+server/node_modules/
+server/dist/
+server/models/
+server/uploads/*
+!/server/uploads/.gitkeep

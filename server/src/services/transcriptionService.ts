@@ -1,0 +1,122 @@
+import { randomUUID } from 'crypto'
+import path from 'path'
+
+import whisper from 'whisper-node'
+
+import { appendHistoryRecord } from './historyService'
+import { enrichJapaneseText } from './japaneseService'
+import { convertAudioToWav, removeFile } from './audioService'
+import type { HistoryRecord, LyricLine, SourceType, WhisperSegment } from '../types'
+import { formatDuration, parseTimestampToMs, shortenText } from '../utils/time'
+
+interface ProcessTranscriptionInput {
+  file: Express.Multer.File
+  sourceType: SourceType
+  title?: string
+  artist?: string
+}
+
+function deriveTitle(fileName: string, excerpt: string): string {
+  const fromName = path
+    .basename(fileName, path.extname(fileName))
+    .replace(/[_-]+/g, ' ')
+    .trim()
+
+  if (fromName) {
+    return fromName
+  }
+
+  if (excerpt) {
+    return shortenText(excerpt, 18)
+  }
+
+  return '未命名音频'
+}
+
+function buildWhisperOptions(): Record<string, unknown> {
+  const modelPath = process.env.WHISPER_MODEL_PATH
+
+  return {
+    ...(modelPath
+      ? { modelPath }
+      : {
+          modelName: process.env.WHISPER_MODEL_NAME ?? 'base'
+        }),
+    whisperOptions: {
+      language: 'ja',
+      gen_file_txt: false,
+      gen_file_subtitle: false,
+      gen_file_vtt: false,
+      word_timestamps: false
+    }
+  }
+}
+
+function normalizeWhisperError(error: unknown): Error {
+  const message = error instanceof Error ? error.message : 'Unknown error'
+
+  if (/model/i.test(message) || /download/i.test(message) || /ENOENT/i.test(message)) {
+    return new Error(
+      'Whisper 模型未准备好，请先在 server 目录执行 `npm run download:model` 下载模型，再重新启动服务。'
+    )
+  }
+
+  return new Error(message)
+}
+
+export async function processTranscription({
+  file,
+  sourceType,
+  title,
+  artist
+}: ProcessTranscriptionInput): Promise<HistoryRecord> {
+  const recordId = randomUUID()
+  const wavPath = await convertAudioToWav(file.path, recordId)
+
+  try {
+    const transcript = (await whisper(wavPath, buildWhisperOptions())) as WhisperSegment[]
+    const usableSegments = transcript.filter((segment) => segment.speech?.trim())
+
+    if (usableSegments.length === 0) {
+      throw new Error('Whisper 没有识别出可用歌词，请尝试更清晰的人声片段。')
+    }
+
+    const lyricLines: LyricLine[] = await Promise.all(
+      usableSegments.map(async (segment, index) => {
+        const enriched = await enrichJapaneseText(segment.speech)
+
+        return {
+          id: `${recordId}-${index + 1}`,
+          index: index + 1,
+          startMs: parseTimestampToMs(segment.start),
+          endMs: parseTimestampToMs(segment.end),
+          ...enriched
+        }
+      })
+    )
+
+    const durationMs = lyricLines[lyricLines.length - 1]?.endMs ?? 0
+    const excerpt = lyricLines[0]?.raw ?? ''
+    const record: HistoryRecord = {
+      id: recordId,
+      title: title?.trim() || deriveTitle(file.originalname, excerpt),
+      artist: artist?.trim() || (sourceType === 'record' ? '即时录音' : '上传音频'),
+      sourceType,
+      fileName: file.originalname,
+      audioUrl: `/uploads/${path.basename(file.path)}`,
+      createdAt: new Date().toISOString(),
+      durationMs,
+      durationLabel: formatDuration(durationMs),
+      excerpt,
+      lyricLines
+    }
+
+    await appendHistoryRecord(record)
+
+    return record
+  } catch (error) {
+    throw normalizeWhisperError(error)
+  } finally {
+    await removeFile(wavPath)
+  }
+}

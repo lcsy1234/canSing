@@ -1,0 +1,37 @@
+page {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(243, 189, 201, 0.2), transparent 28%),
+    radial-gradient(circle at top right, rgba(137, 159, 255, 0.16), transparent 32%),
+    linear-gradient(180deg, #fffaf6 0%, #fffefe 36%, #f8f5ff 100%);
+  color: #2d2443;
+  font-family: 'Avenir Next', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+}
+
+view,
+text,
+button,
+input,
+slider {
+  box-sizing: border-box;
+}
+
+.safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 24px);
+}
+
+.tone-rose {
+  background: linear-gradient(135deg, #f2b5c3 0%, #d47a96 100%);
+}
+
+.tone-indigo {
+  background: linear-gradient(135deg, #8c93f8 0%, #5c66d4 100%);
+}
+
+.tone-coral {
+  background: linear-gradient(135deg, #ffbf9a 0%, #f27874 100%);
+}
+
+.tone-sky {
+  background: linear-gradient(135deg, #87d5e8 0%, #4497d4 100%);
+}
