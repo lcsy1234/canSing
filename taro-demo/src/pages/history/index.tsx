@@ -1,6 +1,6 @@
 import { Input, Text, View } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
-import { useState } from 'react'
+import { startTransition, useEffect, useRef, useState } from 'react'
 
 import BottomNav from '../../components/BottomNav'
 import { fetchHistory } from '../../services/api'
@@ -14,16 +14,34 @@ export default function HistoryPage() {
   const [keyword, setKeyword] = useState('')
   const [loading, setLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
+  const skipNextDidShowRef = useRef(true)
 
   useDidShow(() => {
+    if (skipNextDidShowRef.current) {
+      skipNextDidShowRef.current = false
+      return
+    }
+
     void loadHistory()
   })
 
-  const loadHistory = async () => {
+  useEffect(() => {
+    void loadHistory({ skipPendingState: true })
+  }, [])
+
+  const loadHistory = async (options?: { skipPendingState?: boolean }) => {
     try {
-      setLoading(true)
-      setErrorMessage('')
-      setRecords(await fetchHistory())
+      if (!options?.skipPendingState) {
+        setLoading(true)
+        setErrorMessage('')
+      }
+
+      const nextRecords = await fetchHistory()
+
+      startTransition(() => {
+        setErrorMessage('')
+        setRecords(nextRecords)
+      })
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : '历史记录加载失败。')
     } finally {

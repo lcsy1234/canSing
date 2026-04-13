@@ -1,6 +1,6 @@
 import { Text, View } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
-import { useEffect, useRef, useState } from 'react'
+import { startTransition, useEffect, useRef, useState } from 'react'
 
 import BottomNav from '../../components/BottomNav'
 import { fetchHistory } from '../../services/api'
@@ -20,13 +20,23 @@ export default function IndexPage() {
   const [recordingSeconds, setRecordingSeconds] = useState(0)
   const recorderRef = useRef<any>(null)
   const recordingStartedAtRef = useRef(0)
+  const skipNextDidShowRef = useRef(true)
 
   const totalLines = records.reduce((sum, record) => sum + record.lyricLines.length, 0)
   const recentRecords = records.slice(0, 3)
 
   useDidShow(() => {
+    if (skipNextDidShowRef.current) {
+      skipNextDidShowRef.current = false
+      return
+    }
+
     void loadHistory()
   })
+
+  useEffect(() => {
+    void loadHistory({ skipPendingState: true })
+  }, [])
 
   useEffect(() => {
     if (process.env.TARO_ENV !== 'weapp' || typeof Taro.getRecorderManager !== 'function') {
@@ -86,12 +96,18 @@ export default function IndexPage() {
     }
   }, [isRecording])
 
-  const loadHistory = async () => {
+  const loadHistory = async (options?: { skipPendingState?: boolean }) => {
     try {
-      setLoading(true)
-      setErrorMessage('')
+      if (!options?.skipPendingState) {
+        setLoading(true)
+        setErrorMessage('')
+      }
+
       const history = await fetchHistory()
-      setRecords(history)
+      startTransition(() => {
+        setErrorMessage('')
+        setRecords(history)
+      })
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : '历史记录读取失败。')
     } finally {
