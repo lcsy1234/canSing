@@ -22,9 +22,14 @@ function normalizeClientError(error: unknown): Error {
     )
   }
 
-  if (/ECONNREFUSED 127\.0\.0\.1:3001/i.test(message) || /fail connect to 127\.0\.0\.1:3001/i.test(message)) {
+  if (
+    /ECONNREFUSED 127\.0\.0\.1:3001/i.test(message) ||
+    /fail connect to 127\.0\.0\.1:3001/i.test(message) ||
+    /ERR_CONNECTION_REFUSED/i.test(message) ||
+    /cronet_error_code:-102/i.test(message)
+  ) {
     return new Error(
-      '无法连接本地后端 http://127.0.0.1:3001。请先在 server 目录执行 `npm run dev`；如果是真机调试，请把接口地址改成电脑局域网 IP 或公网 HTTPS 域名。'
+      '无法连接识别后端。请先确认 server 已启动；如果是真机调试，请把 TARO_APP_API_BASE_URL 改成电脑局域网 IP，例如 http://192.168.0.111:3001，并确保手机和电脑在同一 Wi-Fi 下。'
     )
   }
 

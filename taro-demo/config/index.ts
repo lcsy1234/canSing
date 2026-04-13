@@ -1,9 +1,51 @@
+import fs from 'fs'
+import path from 'path'
 import { defineConfig, type UserConfigExport } from '@tarojs/cli'
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 import devConfig from './dev'
 import prodConfig from './prod'
 
+function readEnvFile(filePath: string): Record<string, string> {
+  if (!fs.existsSync(filePath)) {
+    return {}
+  }
+
+  const content = fs.readFileSync(filePath, 'utf8')
+  const entries = content
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'))
+    .map((line) => {
+      const separatorIndex = line.indexOf('=')
+
+      if (separatorIndex === -1) {
+        return null
+      }
+
+      const key = line.slice(0, separatorIndex).trim()
+      const value = line.slice(separatorIndex + 1).trim()
+
+      return key ? [key, value] : null
+    })
+    .filter((entry): entry is [string, string] => Boolean(entry))
+
+  return Object.fromEntries(entries)
+}
+
+function resolveMiniProgramApiBaseUrl(): string {
+  const nodeEnv = process.env.NODE_ENV === 'development' ? 'development' : 'production'
+  const projectRoot = path.resolve(__dirname, '..')
+  const env = {
+    ...readEnvFile(path.resolve(projectRoot, '.env')),
+    ...readEnvFile(path.resolve(projectRoot, `.env.${nodeEnv}`))
+  }
+
+  return env.TARO_APP_API_BASE_URL ?? process.env.TARO_APP_API_BASE_URL ?? 'http://127.0.0.1:3001'
+}
+
 export default defineConfig<'webpack5'>(async (merge) => {
+  const apiBaseUrl = resolveMiniProgramApiBaseUrl()
+
   const baseConfig: UserConfigExport<'webpack5'> = {
     projectName: 'taro-demo',
     date: '2026-04-10',
@@ -18,9 +60,7 @@ export default defineConfig<'webpack5'>(async (merge) => {
     outputRoot: 'dist',
     plugins: ['@tarojs/plugin-generator'],
     defineConstants: {
-      'process.env.TARO_APP_API_BASE_URL': JSON.stringify(
-        process.env.TARO_APP_API_BASE_URL ?? 'http://127.0.0.1:3001'
-      )
+      'process.env.TARO_APP_API_BASE_URL': JSON.stringify(apiBaseUrl)
     },
     copy: {
       patterns: [],
