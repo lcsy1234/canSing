@@ -48,106 +48,116 @@
   color: #aa9bb9;
 }
 
-.detail-focus {
-  position: relative;
-  overflow: hidden;
-  margin-top: 24px;
-  padding: 28px 26px 30px;
-  border-radius: 32px;
-  background:
-    linear-gradient(135deg, rgba(255, 244, 246, 0.96), rgba(255, 255, 255, 0.92));
-  box-shadow: 0 18px 42px rgba(116, 97, 141, 0.1);
+.detail-lyric-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.detail-focus::after {
-  content: '芸';
-  position: absolute;
-  right: 18px;
-  bottom: -16px;
-  font-size: 120px;
-  font-weight: 700;
-  color: rgba(200, 172, 188, 0.12);
-}
-
-.detail-focus__hint {
-  display: inline-block;
-  margin-bottom: 10px;
-  padding: 8px 14px;
+.detail-lyric-modes__chip {
+  padding: 10px 18px;
   border-radius: 999px;
-  background: rgba(241, 201, 214, 0.68);
-  color: #9f5e74;
-  font-size: 18px;
-  font-weight: 700;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(220, 211, 232, 0.65);
 }
 
-.detail-focus__raw {
-  display: block;
-  font-size: 42px;
-  line-height: 1.35;
-  font-weight: 700;
-  color: #312542;
+.detail-lyric-modes__chip--active {
+  border-color: rgba(239, 156, 183, 0.85);
+  background: linear-gradient(135deg, rgba(255, 247, 249, 0.98), rgba(245, 240, 255, 0.95));
+  box-shadow: 0 6px 16px rgba(238, 178, 198, 0.2);
 }
 
-.detail-focus__kana,
-.detail-focus__romaji {
-  display: block;
-  margin-top: 10px;
-  font-size: 22px;
-  color: #8c7e9d;
-}
-
-.detail-focus__phonetic {
-  display: inline-block;
-  margin-top: 16px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: #fff;
-  color: #6d75de;
+.detail-lyric-modes__chip-text {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
+  color: #6b5f7d;
+}
+
+.detail-lyric-modes__chip--active .detail-lyric-modes__chip-text {
+  color: #9f5e74;
 }
 
 .detail-lyrics {
-  height: 560px;
-  margin-top: 22px;
+  height: calc(100vh - 320px);
+  min-height: 520px;
+  max-height: 720px;
+  margin-top: 16px;
 }
 
 .detail-line {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 24px 22px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 12px 32px rgba(113, 94, 139, 0.08);
+  gap: 4px;
+  padding: 14px 14px 14px 18px;
+  border-radius: 16px;
+  border-left: 4px solid transparent;
+  background: rgba(255, 255, 255, 0.45);
 }
 
 .detail-line + .detail-line {
-  margin-top: 14px;
+  margin-top: 8px;
+}
+
+.detail-line--inactive {
+  opacity: 0.52;
+}
+
+.detail-line--inactive .detail-line__raw {
+  font-size: 26px;
+  font-weight: 600;
 }
 
 .detail-line--active {
-  border: 1px solid rgba(245, 197, 208, 0.72);
-  background: linear-gradient(135deg, rgba(255, 247, 249, 0.98), rgba(255, 255, 255, 0.96));
-  box-shadow: 0 16px 38px rgba(238, 178, 198, 0.18);
+  opacity: 1;
+  border-left-color: rgba(236, 140, 168, 0.95);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 8px 22px rgba(113, 94, 139, 0.1);
+}
+
+.detail-line--active .detail-line__raw {
+  font-size: 34px;
+  font-weight: 700;
+  color: #2a1f3d;
 }
 
 .detail-line__raw {
   font-size: 30px;
   font-weight: 700;
   color: #322747;
+  line-height: 1.35;
 }
 
 .detail-line__kana,
 .detail-line__romaji {
-  font-size: 20px;
+  font-size: 19px;
   color: #8a7c9b;
+  line-height: 1.4;
 }
 
 .detail-line__phonetic {
-  font-size: 20px;
+  font-size: 19px;
   color: #6370db;
-  font-weight: 700;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.detail-line__aux--full {
+  font-size: 17px;
+}
+
+.detail-line--active .detail-line__kana,
+.detail-line--active .detail-line__romaji {
+  font-size: 20px;
+}
+
+.detail-line--active .detail-line__phonetic {
+  font-size: 20px;
+}
+
+.detail-line--active .detail-line__aux--full {
+  font-size: 18px;
 }
 
 .detail-player {

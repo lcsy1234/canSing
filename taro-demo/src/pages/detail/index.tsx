@@ -9,6 +9,16 @@ import { formatClock, getToneClass } from '../../utils/presentation'
 
 import './index.scss'
 
+type LyricDisplayMode = 'minimal' | 'phonetic' | 'kana' | 'romaji' | 'full'
+
+const LYRIC_MODE_OPTIONS: { mode: LyricDisplayMode; label: string }[] = [
+  { mode: 'minimal', label: '仅歌词' },
+  { mode: 'phonetic', label: '谐音' },
+  { mode: 'kana', label: '假名' },
+  { mode: 'romaji', label: '罗马音' },
+  { mode: 'full', label: '全部' }
+]
+
 function getActiveLineIndex(lines: LyricLine[], currentMs: number): number {
   if (lines.length === 0) {
     return 0
@@ -29,6 +39,10 @@ function getActiveLineIndex(lines: LyricLine[], currentMs: number): number {
   return activeIndex
 }
 
+function lyricScrollId(line: LyricLine): string {
+  return `lyric-${line.id}`
+}
+
 export default function DetailPage() {
   const [recordId, setRecordId] = useState('')
   const [record, setRecord] = useState<AudioRecord | null>(null)
@@ -36,7 +50,21 @@ export default function DetailPage() {
   const [errorMessage, setErrorMessage] = useState('')
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentSeconds, setCurrentSeconds] = useState(0)
+  const [lyricDisplayMode, setLyricDisplayMode] = useState<LyricDisplayMode>('phonetic')
+  const [scrollIntoView, setScrollIntoView] = useState('')
   const audioRef = useRef<any>(null)
+
+  const loadRecord = async (nextRecordId: string) => {
+    try {
+      setLoading(true)
+      setErrorMessage('')
+      setRecord(await fetchRecord(nextRecordId))
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : '记录读取失败。')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     const current = Taro.getCurrentInstance().router?.params?.id ?? ''
@@ -91,20 +119,18 @@ export default function DetailPage() {
     }
   }, [record?.id])
 
-  const loadRecord = async (nextRecordId: string) => {
-    try {
-      setLoading(true)
-      setErrorMessage('')
-      setRecord(await fetchRecord(nextRecordId))
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : '记录读取失败。')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const activeIndex = record ? getActiveLineIndex(record.lyricLines, Math.round(currentSeconds * 1000)) : 0
-  const activeLine = record?.lyricLines[activeIndex] ?? null
+
+  useEffect(() => {
+    if (!record?.lyricLines.length) {
+      return
+    }
+
+    const line = record.lyricLines[activeIndex]
+    if (line) {
+      setScrollIntoView(lyricScrollId(line))
+    }
+  }, [activeIndex, record?.id])
 
   const togglePlayback = () => {
     if (!audioRef.current) {
@@ -171,30 +197,53 @@ export default function DetailPage() {
             </View>
           </View>
 
-          <View className='detail-focus'>
-            <Text className='detail-focus__hint'>当前正在练唱</Text>
-            <Text className='detail-focus__raw'>{activeLine?.raw ?? '准备开始...'}</Text>
-            <Text className='detail-focus__kana'>{activeLine?.kana ?? ''}</Text>
-            <Text className='detail-focus__romaji'>{activeLine?.romaji ?? ''}</Text>
-            <Text className='detail-focus__phonetic'>{activeLine?.chinesePhonetic ?? ''}</Text>
+          <View className='detail-lyric-modes'>
+            {LYRIC_MODE_OPTIONS.map(({ mode, label }) => (
+              <View
+                key={mode}
+                className={`detail-lyric-modes__chip ${lyricDisplayMode === mode ? 'detail-lyric-modes__chip--active' : ''}`}
+                onClick={() => {
+                  setLyricDisplayMode(mode)
+                }}
+              >
+                <Text className='detail-lyric-modes__chip-text'>{label}</Text>
+              </View>
+            ))}
           </View>
 
-          <ScrollView className='detail-lyrics' scrollY>
+          <ScrollView
+            className='detail-lyrics'
+            scrollY
+            scrollIntoView={scrollIntoView}
+            scrollWithAnimation
+            scrollIntoViewAlignment='center'
+          >
             {record.lyricLines.map((line, index) => {
               const isActive = index === activeIndex
 
               return (
                 <View
                   key={line.id}
-                  className={`detail-line ${isActive ? 'detail-line--active' : ''}`}
+                  id={lyricScrollId(line)}
+                  className={`detail-line ${isActive ? 'detail-line--active' : 'detail-line--inactive'}`}
                   onClick={() => {
                     seekToLine(line)
                   }}
                 >
                   <Text className='detail-line__raw'>{line.raw}</Text>
-                  <Text className='detail-line__kana'>{line.kana}</Text>
-                  <Text className='detail-line__romaji'>{line.romaji}</Text>
-                  <Text className='detail-line__phonetic'>{line.chinesePhonetic}</Text>
+                  {lyricDisplayMode === 'minimal' ? null : lyricDisplayMode === 'phonetic' ? (
+                    <Text className='detail-line__phonetic'>{line.chinesePhonetic}</Text>
+                  ) : lyricDisplayMode === 'kana' ? (
+                    <Text className='detail-line__kana'>{line.kana}</Text>
+                  ) : lyricDisplayMode === 'romaji' ? (
+                    <Text className='detail-line__romaji'>{line.romaji}</Text>
+                  ) : (
+                    <>
+                      <Text className='detail-line__kana detail-line__aux--full'>{line.kana}</Text>
+                      <Text className='detail-line__romaji detail-line__aux--full'>{line.romaji}</Text>
+                      <Text className='detail-line__phonetic detail-line__aux--full'>{line.chinesePhonetic}</Text>
+                    </>
+                  )}
                 </View>
               )
             })}
