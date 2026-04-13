@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto'
+import { existsSync } from 'fs'
 import path from 'path'
 
 import whisper from 'whisper-node'
@@ -8,6 +9,8 @@ import { enrichJapaneseText } from './japaneseService'
 import { convertAudioToWav, removeFile } from './audioService'
 import type { HistoryRecord, LyricLine, SourceType, WhisperSegment } from '../types'
 import { formatDuration, parseTimestampToMs, shortenText } from '../utils/time'
+
+const serverRoot = path.resolve(__dirname, '../..')
 
 interface ProcessTranscriptionInput {
   file: Express.Multer.File
@@ -34,13 +37,14 @@ function deriveTitle(fileName: string, excerpt: string): string {
 }
 
 function buildWhisperOptions(): Record<string, unknown> {
-  const modelPath = process.env.WHISPER_MODEL_PATH
+  const modelName = process.env.WHISPER_MODEL_NAME?.trim() || 'base'
+  const modelPath = findAvailableWhisperModelPath()
 
   return {
     ...(modelPath
       ? { modelPath }
       : {
-          modelName: process.env.WHISPER_MODEL_NAME ?? 'base'
+          modelName
         }),
     whisperOptions: {
       language: 'ja',
@@ -52,8 +56,59 @@ function buildWhisperOptions(): Record<string, unknown> {
   }
 }
 
+function resolveWhisperModelName(): string {
+  return process.env.WHISPER_MODEL_NAME?.trim() || 'base'
+}
+
+function getWhisperModelCandidates(): string[] {
+  const customModelPath = process.env.WHISPER_MODEL_PATH?.trim()
+  const modelName = resolveWhisperModelName()
+
+  if (customModelPath) {
+    return [customModelPath]
+  }
+
+  const whisperPackageRoot = path.dirname(require.resolve('whisper-node/package.json'))
+  const projectModelPath = path.join(serverRoot, 'models', `ggml-${modelName}.bin`)
+  const packageModelPath = path.join(
+    whisperPackageRoot,
+    'lib',
+    'whisper.cpp',
+    'models',
+    `ggml-${modelName}.bin`
+  )
+
+  return [projectModelPath, packageModelPath]
+}
+
+function findAvailableWhisperModelPath(): string | null {
+  return getWhisperModelCandidates().find((candidate) => existsSync(candidate)) ?? null
+}
+
+async function ensureWhisperModelReady(): Promise<void> {
+  const resolvedModelPath = findAvailableWhisperModelPath()
+
+  if (!resolvedModelPath) {
+    const [projectModelPath, packageModelPath] = getWhisperModelCandidates()
+
+    throw new Error(
+      [
+        'Whisper 模型文件不存在。',
+        `建议把模型放到：${projectModelPath}`,
+        '也可以在 server/.env 中设置 `WHISPER_MODEL_PATH=/你的/ggml-base.bin`。',
+        `当前还检查过默认依赖目录：${packageModelPath}`,
+        '如果你的网络能访问外网，也可以在 server 目录执行 `npm run download:model`。'
+      ].join(' ')
+    )
+  }
+}
+
 function normalizeWhisperError(error: unknown): Error {
   const message = error instanceof Error ? error.message : 'Unknown error'
+
+  if (/Whisper 模型文件不存在/.test(message)) {
+    return new Error(message)
+  }
 
   if (/model/i.test(message) || /download/i.test(message) || /ENOENT/i.test(message)) {
     return new Error(
@@ -74,7 +129,16 @@ export async function processTranscription({
   const wavPath = await convertAudioToWav(file.path, recordId)
 
   try {
-    const transcript = (await whisper(wavPath, buildWhisperOptions())) as WhisperSegment[]
+    await ensureWhisperModelReady()
+
+    const transcript = await whisper(wavPath, buildWhisperOptions())
+
+    if (!Array.isArray(transcript)) {
+      throw new Error(
+        'Whisper 没有返回可解析结果。请检查 server 终端中的 [whisper-node] Problem 日志，并确认模型已经下载完成。'
+      )
+    }
+
     const usableSegments = transcript.filter((segment) => segment.speech?.trim())
 
     if (usableSegments.length === 0) {

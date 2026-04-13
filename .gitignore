@@ -11,6 +11,7 @@ taro-demo/.swc/
 
 server/node_modules/
 server/dist/
-server/models/
+server/models/*
+!server/models/.gitkeep
 server/uploads/*
 !/server/uploads/.gitkeep

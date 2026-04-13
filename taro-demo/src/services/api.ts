@@ -8,17 +8,50 @@ interface UploadHandle {
   promise: Promise<AudioRecord>
 }
 
+function normalizeClientError(error: unknown): Error {
+  const message =
+    typeof error === 'string'
+      ? error
+      : error instanceof Error
+        ? error.message
+        : (error as { errMsg?: string } | undefined)?.errMsg ?? '请求失败。'
+
+  if (/url not in domain list/i.test(message)) {
+    return new Error(
+      '当前小程序未通过域名校验。开发者工具里可关闭“校验合法域名”；真机或预览环境请改用已配置到微信后台的 HTTPS 域名。'
+    )
+  }
+
+  if (/ECONNREFUSED 127\.0\.0\.1:3001/i.test(message) || /fail connect to 127\.0\.0\.1:3001/i.test(message)) {
+    return new Error(
+      '无法连接本地后端 http://127.0.0.1:3001。请先在 server 目录执行 `npm run dev`；如果是真机调试，请把接口地址改成电脑局域网 IP 或公网 HTTPS 域名。'
+    )
+  }
+
+  if (/timeout/i.test(message)) {
+    return new Error('连接后端超时。请确认 server 已启动，并且当前小程序环境可以访问这个地址。')
+  }
+
+  return new Error(message)
+}
+
 async function request<T>(url: string): Promise<T> {
-  const response = await Taro.request<T>({
-    url: `${API_BASE}${url}`,
-    method: 'GET'
-  })
+  let response: Taro.request.SuccessCallbackResult<any>
+
+  try {
+    response = await Taro.request<T>({
+      url: `${API_BASE}${url}`,
+      method: 'GET'
+    })
+  } catch (error) {
+    throw normalizeClientError(error)
+  }
 
   if (response.statusCode >= 400) {
     throw new Error((response.data as { message?: string })?.message ?? '请求失败。')
   }
 
-  return response.data
+  return response.data as T
 }
 
 function parseUploadResponse(payload: string): { message?: string; record?: AudioRecord } {
@@ -67,7 +100,7 @@ export function uploadAudioForTranscription(
         resolve(payload.record)
       },
       fail: (error) => {
-        reject(new Error(error.errMsg || '音频上传失败。'))
+        reject(normalizeClientError(error))
       }
     })
 

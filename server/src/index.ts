@@ -1,4 +1,5 @@
 import cors from 'cors'
+import dotenv from 'dotenv'
 import express from 'express'
 import multer from 'multer'
 import path from 'path'
@@ -7,6 +8,10 @@ import { ensureHistoryStore, getHistoryRecord, listHistory } from './services/hi
 import { ensureUploadsReady, getUploadsDir } from './services/audioService'
 import { processTranscription } from './services/transcriptionService'
 import type { SourceType } from './types'
+
+dotenv.config({
+  path: path.resolve(__dirname, '../.env')
+})
 
 const port = Number(process.env.PORT ?? 3001)
 const app = express()

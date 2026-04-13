@@ -16,9 +16,16 @@
 
 ## 启动前准备
 
-### 1. 安装 ffmpeg
+### 1. 准备 ffmpeg
 
-当前机器未检测到 `ffmpeg`，后端转码需要先安装。
+后端会优先使用 `server` 依赖里的 `ffmpeg-static`，所以大多数情况下先执行下面这步就够了：
+
+```bash
+cd server
+npm install
+```
+
+如果你的环境里 `ffmpeg-static` 下载失败，再安装系统 `ffmpeg`，或者通过 `FFMPEG_PATH` 指向本地 ffmpeg 可执行文件。
 
 macOS 可参考：
 
@@ -35,6 +42,14 @@ npm run download:model
 ```
 
 默认使用 `base` 模型。也可以通过 `WHISPER_MODEL_NAME` 或 `WHISPER_MODEL_PATH` 自定义。
+
+如果你的网络暂时连不上 `huggingface.co`，推荐直接把模型手动放到下面这个目录：
+
+```text
+server/models/ggml-base.bin
+```
+
+项目现在会自动优先读取 `server/.env`，并优先从 `server/models` 查找模型，不需要再把模型塞进 `node_modules`。
 
 ## 启动后端
 

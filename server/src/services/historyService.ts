@@ -3,7 +3,8 @@ import path from 'path'
 
 import type { HistoryRecord } from '../types'
 
-const dataDir = path.resolve(process.cwd(), 'data')
+const serverRoot = path.resolve(__dirname, '../..')
+const dataDir = path.join(serverRoot, 'data')
 const historyFilePath = path.join(dataDir, 'history.json')
 
 export async function ensureHistoryStore(): Promise<void> {
