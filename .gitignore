@@ -7,6 +7,7 @@ dist/
 taro-demo/dist/
 taro-demo/.temp/
 taro-demo/.cache/
+taro-demo/.swc/
 
 server/node_modules/
 server/dist/
