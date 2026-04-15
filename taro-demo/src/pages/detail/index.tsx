@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 
 import { resolveMediaUrl } from '../../constants/api'
-import { fetchRecord } from '../../services/api'
+import { fetchRecord, updateRecord } from '../../services/api'
 import type { AudioRecord, LyricLine } from '../../types/record'
 import { formatClock, getToneClass } from '../../utils/presentation'
 
@@ -29,6 +29,13 @@ const LYRIC_MODE_OPTIONS: { mode: LyricDisplayMode; label: string }[] = [
   { mode: 'romaji', label: '罗马音' },
   { mode: 'full', label: '全部' }
 ]
+
+const EDITABLE_MODE_LABEL: Partial<Record<LyricDisplayMode, string>> = {
+  phoneticOnly: '仅谐音',
+  minimal: '仅歌词',
+  romajiOnly: '仅罗马音',
+  kanaOnly: '仅假名'
+}
 
 function getActiveLineIndex(lines: LyricLine[], currentMs: number): number {
   if (lines.length === 0) {
@@ -63,7 +70,9 @@ export default function DetailPage() {
   const [currentSeconds, setCurrentSeconds] = useState(0)
   const [lyricDisplayMode, setLyricDisplayMode] = useState<LyricDisplayMode>('phoneticOnly')
   const [scrollIntoView, setScrollIntoView] = useState('')
+  const [isSavingLyric, setIsSavingLyric] = useState(false)
   const audioRef = useRef<any>(null)
+  const lastTapRef = useRef<{ lineId: string; at: number }>({ lineId: '', at: 0 })
 
   const loadRecord = async (nextRecordId: string) => {
     try {
@@ -198,6 +207,199 @@ export default function DetailPage() {
     })
   }
 
+  const canEditCurrentMode = Boolean(EDITABLE_MODE_LABEL[lyricDisplayMode])
+
+  const getEditableLineValue = (line: LyricLine): string => {
+    if (lyricDisplayMode === 'phoneticOnly') {
+      return line.chinesePhonetic
+    }
+
+    if (lyricDisplayMode === 'romajiOnly') {
+      return line.romaji
+    }
+
+    if (lyricDisplayMode === 'kanaOnly') {
+      return line.kana
+    }
+
+    return line.raw
+  }
+
+  const patchLineByMode = (line: LyricLine, value: string): LyricLine => {
+    if (lyricDisplayMode === 'phoneticOnly') {
+      return { ...line, chinesePhonetic: value }
+    }
+
+    if (lyricDisplayMode === 'romajiOnly') {
+      return { ...line, romaji: value }
+    }
+
+    if (lyricDisplayMode === 'kanaOnly') {
+      return { ...line, kana: value }
+    }
+
+    return { ...line, raw: value }
+  }
+
+  const persistLyricLines = async (nextLines: LyricLine[]) => {
+    if (!record) {
+      return
+    }
+
+    setIsSavingLyric(true)
+    try {
+      const nextRecord = await updateRecord(record.id, {
+        title: record.title,
+        artist: record.artist,
+        lyricLines: nextLines.map((line) => ({
+          id: line.id,
+          startMs: line.startMs,
+          endMs: line.endMs,
+          raw: line.raw,
+          kana: line.kana,
+          romaji: line.romaji,
+          chinesePhonetic: line.chinesePhonetic
+        }))
+      })
+      setRecord(nextRecord)
+      await Taro.showToast({ title: '已保存', icon: 'success' })
+    } catch (error) {
+      await Taro.showToast({
+        title: error instanceof Error ? error.message : '保存失败',
+        icon: 'none'
+      })
+    } finally {
+      setIsSavingLyric(false)
+    }
+  }
+
+  const editLineByMode = async (line: LyricLine) => {
+    if (!record || !canEditCurrentMode || isSavingLyric) {
+      return
+    }
+
+    const modalResult = (await Taro.showModal({
+      title: `编辑${EDITABLE_MODE_LABEL[lyricDisplayMode] ?? '歌词'}`,
+      editable: true,
+      placeholderText: '请输入新的歌词内容',
+      content: getEditableLineValue(line)
+    } as any)) as { confirm?: boolean; content?: string }
+
+    if (!modalResult.confirm) {
+      return
+    }
+
+    const nextValue = (modalResult.content ?? '').trim()
+    if (!nextValue) {
+      await Taro.showToast({
+        title: '内容不能为空',
+        icon: 'none'
+      })
+      return
+    }
+
+    const nextLines = record.lyricLines.map((currentLine) =>
+      currentLine.id === line.id ? patchLineByMode(currentLine, nextValue) : currentLine
+    )
+    await persistLyricLines(nextLines)
+  }
+
+  const handleLineClick = (line: LyricLine) => {
+    seekToLine(line)
+
+    if (!canEditCurrentMode || isSavingLyric) {
+      return
+    }
+
+    // 小程序端没有稳定的 onDoubleClick，保留双击手势识别作为兜底。
+    const now = Date.now()
+    const isDoubleTap = lastTapRef.current.lineId === line.id && now - lastTapRef.current.at <= 320
+    lastTapRef.current = { lineId: line.id, at: now }
+
+    if (isDoubleTap) {
+      // 双击后进入行内自定义编辑
+      void editLineByMode(line)
+    }
+  }
+
+  const buildExportContent = (): string => {
+    if (!record) {
+      return ''
+    }
+
+    const body = record.lyricLines
+      .map((line, index) => {
+        if (lyricDisplayMode === 'phoneticOnly') {
+          return `${index + 1}. ${line.chinesePhonetic}`
+        }
+
+        if (lyricDisplayMode === 'romajiOnly') {
+          return `${index + 1}. ${line.romaji}`
+        }
+
+        if (lyricDisplayMode === 'kanaOnly') {
+          return `${index + 1}. ${line.kana}`
+        }
+
+        if (lyricDisplayMode === 'minimal') {
+          return `${index + 1}. ${line.raw}`
+        }
+
+        if (lyricDisplayMode === 'phonetic') {
+          return `${index + 1}. ${line.raw}\n${line.chinesePhonetic}`
+        }
+
+        if (lyricDisplayMode === 'kana') {
+          return `${index + 1}. ${line.raw}\n${line.kana}`
+        }
+
+        if (lyricDisplayMode === 'romaji') {
+          return `${index + 1}. ${line.raw}\n${line.romaji}`
+        }
+
+        return `${index + 1}. ${line.raw}\n${line.kana}\n${line.romaji}\n${line.chinesePhonetic}`
+      })
+      .join('\n\n')
+
+    return `${record.title} - ${record.artist}\n模式：${
+      LYRIC_MODE_OPTIONS.find((option) => option.mode === lyricDisplayMode)?.label ?? lyricDisplayMode
+    }\n\n${body}\n`
+  }
+
+  const handleExportLyrics = async () => {
+    if (!record) {
+      return
+    }
+
+    try {
+      const safeTitle = record.title.replace(/[\\/:*?"<>|]/g, '-').slice(0, 24) || 'lyrics'
+      const fileName = `${safeTitle}-${lyricDisplayMode}.txt`
+      const filePath = `${Taro.env.USER_DATA_PATH}/${fileName}`
+      const fileSystem = Taro.getFileSystemManager()
+
+      await new Promise<void>((resolve, reject) => {
+        fileSystem.writeFile({
+          filePath,
+          encoding: 'utf8',
+          data: buildExportContent(),
+          success: () => resolve(),
+          fail: (error) => reject(error)
+        })
+      })
+
+      await Taro.showModal({
+        title: '导出成功',
+        content: `已生成：${fileName}`,
+        showCancel: false
+      })
+    } catch (error) {
+      await Taro.showToast({
+        title: error instanceof Error ? error.message : '导出失败',
+        icon: 'none'
+      })
+    }
+  }
+
   return (
     <View className='detail-page'>
       {loading ? (
@@ -231,6 +433,9 @@ export default function DetailPage() {
               </View>
             ))}
           </View>
+          <Text className='detail-lyrics__hint'>
+            {canEditCurrentMode ? '双击歌词行可直接编辑当前模式文本' : '切到“仅谐音 / 仅歌词 / 仅罗马音 / 仅假名”可双击编辑'}
+          </Text>
 
           <ScrollView
             className='detail-lyrics'
@@ -248,9 +453,7 @@ export default function DetailPage() {
                   key={line.id}
                   id={lyricScrollId(line)}
                   className={`detail-line ${isActive ? 'detail-line--active' : 'detail-line--inactive'}`}
-                  onClick={() => {
-                    seekToLine(line)
-                  }}
+                  onClick={() => handleLineClick(line)}
                 >
                   {showRaw ? <Text className='detail-line__raw'>{line.raw}</Text> : null}
                   {lyricDisplayMode === 'minimal' ? null : lyricDisplayMode === 'phonetic' ? (
@@ -310,6 +513,9 @@ export default function DetailPage() {
               </View>
               <View className='detail-player__edit' onClick={() => void openLyricEditor()}>
                 <Text>编辑歌词</Text>
+              </View>
+              <View className='detail-player__export' onClick={() => void handleExportLyrics()}>
+                <Text>导出歌词</Text>
               </View>
             </View>
           </View>

@@ -85,6 +85,13 @@
   margin-top: 16px;
 }
 
+.detail-lyrics__hint {
+  display: block;
+  margin-top: 10px;
+  color: #8d7fa1;
+  font-size: 18px;
+}
+
 .detail-line {
   position: relative;
   display: flex;
@@ -225,6 +232,21 @@
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(220, 211, 232, 0.9);
   color: #7d6a8d;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.detail-player__export {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 126px;
+  height: 66px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e9f2ff 0%, #dce8ff 100%);
+  border: 1px solid rgba(174, 193, 239, 0.95);
+  color: #5569a7;
   font-size: 20px;
   font-weight: 600;
 }
