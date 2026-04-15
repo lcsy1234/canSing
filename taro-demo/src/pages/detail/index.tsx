@@ -71,6 +71,8 @@ export default function DetailPage() {
   const [lyricDisplayMode, setLyricDisplayMode] = useState<LyricDisplayMode>('phoneticOnly')
   const [scrollIntoView, setScrollIntoView] = useState('')
   const [isSavingLyric, setIsSavingLyric] = useState(false)
+  const [isExportPickerVisible, setIsExportPickerVisible] = useState(false)
+  const [selectedExportModes, setSelectedExportModes] = useState<LyricDisplayMode[]>(['phoneticOnly'])
   const audioRef = useRef<any>(null)
   const lastTapRef = useRef<{ lineId: string; at: number }>({ lineId: '', at: 0 })
 
@@ -208,6 +210,10 @@ export default function DetailPage() {
   }
 
   const canEditCurrentMode = Boolean(EDITABLE_MODE_LABEL[lyricDisplayMode])
+  const selectedExportModeSet = new Set(selectedExportModes)
+
+  const getModeLabel = (mode: LyricDisplayMode): string =>
+    LYRIC_MODE_OPTIONS.find((option) => option.mode === mode)?.label ?? mode
 
   const getEditableLineValue = (line: LyricLine): string => {
     if (lyricDisplayMode === 'phoneticOnly') {
@@ -322,48 +328,78 @@ export default function DetailPage() {
     }
   }
 
-  const buildExportContent = (): string => {
+  const buildExportBodyByMode = (mode: LyricDisplayMode): string => {
     if (!record) {
       return ''
     }
 
-    const body = record.lyricLines
+    return record.lyricLines
       .map((line, index) => {
-        if (lyricDisplayMode === 'phoneticOnly') {
+        if (mode === 'phoneticOnly') {
           return `${index + 1}. ${line.chinesePhonetic}`
         }
 
-        if (lyricDisplayMode === 'romajiOnly') {
+        if (mode === 'romajiOnly') {
           return `${index + 1}. ${line.romaji}`
         }
 
-        if (lyricDisplayMode === 'kanaOnly') {
+        if (mode === 'kanaOnly') {
           return `${index + 1}. ${line.kana}`
         }
 
-        if (lyricDisplayMode === 'minimal') {
+        if (mode === 'minimal') {
           return `${index + 1}. ${line.raw}`
         }
 
-        if (lyricDisplayMode === 'phonetic') {
+        if (mode === 'phonetic') {
           return `${index + 1}. ${line.raw}\n${line.chinesePhonetic}`
         }
 
-        if (lyricDisplayMode === 'kana') {
+        if (mode === 'kana') {
           return `${index + 1}. ${line.raw}\n${line.kana}`
         }
 
-        if (lyricDisplayMode === 'romaji') {
+        if (mode === 'romaji') {
           return `${index + 1}. ${line.raw}\n${line.romaji}`
         }
 
         return `${index + 1}. ${line.raw}\n${line.kana}\n${line.romaji}\n${line.chinesePhonetic}`
       })
       .join('\n\n')
+  }
 
-    return `${record.title} - ${record.artist}\n模式：${
-      LYRIC_MODE_OPTIONS.find((option) => option.mode === lyricDisplayMode)?.label ?? lyricDisplayMode
-    }\n\n${body}\n`
+  const buildExportContent = (modes: LyricDisplayMode[]): string => {
+    if (!record) {
+      return ''
+    }
+
+    const sections = modes
+      .map((mode) => {
+        const modeBody = buildExportBodyByMode(mode)
+        return `【${getModeLabel(mode)}】\n\n${modeBody}`
+      })
+      .join('\n\n--------------------\n\n')
+
+    return `${record.title} - ${record.artist}\n导出格式：${modes.map((mode) => getModeLabel(mode)).join(' / ')}\n\n${sections}\n`
+  }
+
+  const toggleExportMode = (mode: LyricDisplayMode) => {
+    setSelectedExportModes((previousModes) => {
+      if (previousModes.includes(mode)) {
+        if (previousModes.length === 1) {
+          return previousModes
+        }
+        return previousModes.filter((value) => value !== mode)
+      }
+      return [...previousModes, mode]
+    })
+  }
+
+  const openExportPicker = () => {
+    setSelectedExportModes((previousModes) =>
+      previousModes.length > 0 ? previousModes : [lyricDisplayMode]
+    )
+    setIsExportPickerVisible(true)
   }
 
   const handleExportLyrics = async () => {
@@ -371,9 +407,14 @@ export default function DetailPage() {
       return
     }
 
+    if (selectedExportModes.length === 0) {
+      await Taro.showToast({ title: '请至少选择一种格式', icon: 'none' })
+      return
+    }
+
     try {
       const safeTitle = record.title.replace(/[\\/:*?"<>|]/g, '-').slice(0, 24) || 'lyrics'
-      const fileName = `${safeTitle}-${lyricDisplayMode}.txt`
+      const fileName = `${safeTitle}-lyrics.txt`
       const filePath = `${Taro.env.USER_DATA_PATH}/${fileName}`
       const fileSystem = Taro.getFileSystemManager()
 
@@ -381,15 +422,16 @@ export default function DetailPage() {
         fileSystem.writeFile({
           filePath,
           encoding: 'utf8',
-          data: buildExportContent(),
+          data: buildExportContent(selectedExportModes),
           success: () => resolve(),
           fail: (error) => reject(error)
         })
       })
 
+      setIsExportPickerVisible(false)
       await Taro.showModal({
         title: '导出成功',
-        content: `已生成：${fileName}`,
+        content: `已生成：${fileName}\n格式：${selectedExportModes.map((mode) => getModeLabel(mode)).join(' / ')}`,
         showCancel: false
       })
     } catch (error) {
@@ -514,11 +556,37 @@ export default function DetailPage() {
               <View className='detail-player__edit' onClick={() => void openLyricEditor()}>
                 <Text>编辑歌词</Text>
               </View>
-              <View className='detail-player__export' onClick={() => void handleExportLyrics()}>
+              <View className='detail-player__export' onClick={openExportPicker}>
                 <Text>导出歌词</Text>
               </View>
             </View>
           </View>
+          {isExportPickerVisible ? (
+            <View className='detail-export-mask'>
+              <View className='detail-export-card'>
+                <Text className='detail-export-card__title'>选择导出格式（可多选）</Text>
+                <View className='detail-export-card__modes'>
+                  {LYRIC_MODE_OPTIONS.map(({ mode, label }) => (
+                    <View
+                      key={`export-${mode}`}
+                      className={`detail-export-card__chip ${selectedExportModeSet.has(mode) ? 'detail-export-card__chip--active' : ''}`}
+                      onClick={() => toggleExportMode(mode)}
+                    >
+                      <Text className='detail-export-card__chip-text'>{label}</Text>
+                    </View>
+                  ))}
+                </View>
+                <View className='detail-export-card__actions'>
+                  <View className='detail-export-card__button detail-export-card__button--cancel' onClick={() => setIsExportPickerVisible(false)}>
+                    <Text>取消</Text>
+                  </View>
+                  <View className='detail-export-card__button detail-export-card__button--confirm' onClick={() => void handleExportLyrics()}>
+                    <Text>确认导出</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          ) : null}
         </>
       ) : (
         <View className='detail-empty'>
