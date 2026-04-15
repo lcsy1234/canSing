@@ -9,9 +9,20 @@ import { formatClock, getToneClass } from '../../utils/presentation'
 
 import './index.scss'
 
-type LyricDisplayMode = 'minimal' | 'phonetic' | 'kana' | 'romaji' | 'full'
+type LyricDisplayMode =
+  | 'minimal'
+  | 'phonetic'
+  | 'kana'
+  | 'romaji'
+  | 'full'
+  | 'phoneticOnly'
+  | 'romajiOnly'
+  | 'kanaOnly'
 
 const LYRIC_MODE_OPTIONS: { mode: LyricDisplayMode; label: string }[] = [
+  { mode: 'phoneticOnly', label: '仅谐音' },
+  { mode: 'romajiOnly', label: '仅罗马音' },
+  { mode: 'kanaOnly', label: '仅假名' },
   { mode: 'minimal', label: '仅歌词' },
   { mode: 'phonetic', label: '谐音' },
   { mode: 'kana', label: '假名' },
@@ -50,7 +61,7 @@ export default function DetailPage() {
   const [errorMessage, setErrorMessage] = useState('')
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentSeconds, setCurrentSeconds] = useState(0)
-  const [lyricDisplayMode, setLyricDisplayMode] = useState<LyricDisplayMode>('phonetic')
+  const [lyricDisplayMode, setLyricDisplayMode] = useState<LyricDisplayMode>('phoneticOnly')
   const [scrollIntoView, setScrollIntoView] = useState('')
   const audioRef = useRef<any>(null)
 
@@ -230,6 +241,7 @@ export default function DetailPage() {
           >
             {record.lyricLines.map((line, index) => {
               const isActive = index === activeIndex
+              const showRaw = !['phoneticOnly', 'romajiOnly', 'kanaOnly'].includes(lyricDisplayMode)
 
               return (
                 <View
@@ -240,13 +252,19 @@ export default function DetailPage() {
                     seekToLine(line)
                   }}
                 >
-                  <Text className='detail-line__raw'>{line.raw}</Text>
+                  {showRaw ? <Text className='detail-line__raw'>{line.raw}</Text> : null}
                   {lyricDisplayMode === 'minimal' ? null : lyricDisplayMode === 'phonetic' ? (
                     <Text className='detail-line__phonetic'>{line.chinesePhonetic}</Text>
                   ) : lyricDisplayMode === 'kana' ? (
                     <Text className='detail-line__kana'>{line.kana}</Text>
                   ) : lyricDisplayMode === 'romaji' ? (
                     <Text className='detail-line__romaji'>{line.romaji}</Text>
+                  ) : lyricDisplayMode === 'phoneticOnly' ? (
+                    <Text className='detail-line__phonetic'>{line.chinesePhonetic}</Text>
+                  ) : lyricDisplayMode === 'romajiOnly' ? (
+                    <Text className='detail-line__romaji'>{line.romaji}</Text>
+                  ) : lyricDisplayMode === 'kanaOnly' ? (
+                    <Text className='detail-line__kana'>{line.kana}</Text>
                   ) : (
                     <>
                       <Text className='detail-line__kana detail-line__aux--full'>{line.kana}</Text>
