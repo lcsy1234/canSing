@@ -214,6 +214,21 @@
   font-size: 30px;
 }
 
+.detail-player__edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 126px;
+  height: 66px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(220, 211, 232, 0.9);
+  color: #7d6a8d;
+  font-size: 20px;
+  font-weight: 600;
+}
+
 .detail-player__ghost {
   width: 68px;
   height: 68px;

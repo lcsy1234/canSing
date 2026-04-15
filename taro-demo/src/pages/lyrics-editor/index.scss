@@ -1,0 +1,128 @@
+.lyrics-editor-page {
+  min-height: 100vh;
+  padding: 24px 20px 48px;
+}
+
+.lyrics-editor-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lyrics-editor-page__title {
+  font-size: 38px;
+  font-weight: 700;
+  color: #2d2244;
+}
+
+.lyrics-editor-page__subtitle {
+  font-size: 20px;
+  color: #8d7fa0;
+}
+
+.lyrics-editor-page__card,
+.lyrics-line-card {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(227, 211, 233, 0.72);
+}
+
+.lyrics-editor-page__section-title {
+  margin-top: 18px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #43315c;
+}
+
+.lyrics-editor-page__label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-size: 18px;
+  color: #7d6f90;
+}
+
+.lyrics-editor-page__input {
+  height: 74px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(221, 208, 228, 0.8);
+  background: #fff;
+  font-size: 22px;
+  color: #2e2442;
+}
+
+.lyrics-line-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lyrics-line-card__index {
+  font-size: 22px;
+  font-weight: 700;
+  color: #6f5d88;
+}
+
+.lyrics-line-card__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  height: 52px;
+  border-radius: 999px;
+  background: rgba(248, 225, 232, 0.9);
+  color: #ad4a67;
+  font-size: 18px;
+}
+
+.lyrics-line-card__times {
+  display: flex;
+  gap: 10px;
+}
+
+.lyrics-line-card__time-field {
+  flex: 1;
+}
+
+.lyrics-editor-page__add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 78px;
+  margin-top: 18px;
+  border-radius: 18px;
+  border: 1px dashed rgba(179, 157, 197, 0.95);
+  color: #735e88;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.lyrics-editor-page__save {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 84px;
+  margin-top: 16px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #f0a1ba 0%, #8792ec 100%);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.lyrics-editor-page__save--disabled {
+  opacity: 0.7;
+}
+
+.lyrics-editor-page__empty {
+  margin-top: 80px;
+  padding: 30px 20px;
+  text-align: center;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #6f6482;
+  font-size: 24px;
+}

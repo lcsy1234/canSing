@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 
 import { API_BASE } from '../constants/api'
-import type { AudioRecord, PendingAudio } from '../types/record'
+import type { AudioRecord, PendingAudio, UpdateRecordPayload } from '../types/record'
 
 interface UploadHandle {
   abort: () => void
@@ -40,13 +40,14 @@ function normalizeClientError(error: unknown): Error {
   return new Error(message)
 }
 
-async function request<T>(url: string): Promise<T> {
+async function request<T>(url: string, options?: { method?: 'GET' | 'PUT'; data?: unknown }): Promise<T> {
   let response: Taro.request.SuccessCallbackResult<any>
 
   try {
     response = await Taro.request<T>({
       url: `${API_BASE}${url}`,
-      method: 'GET'
+      method: options?.method ?? 'GET',
+      data: options?.data
     })
   } catch (error) {
     throw normalizeClientError(error)
@@ -76,6 +77,15 @@ export async function fetchHistory(): Promise<AudioRecord[]> {
 
 export async function fetchRecord(recordId: string): Promise<AudioRecord> {
   const response = await request<{ record: AudioRecord }>(`/history/${recordId}`)
+  return response.record
+}
+
+export async function updateRecord(recordId: string, payload: UpdateRecordPayload): Promise<AudioRecord> {
+  const response = await request<{ record: AudioRecord }>(`/history/${recordId}`, {
+    method: 'PUT',
+    data: payload
+  })
+
   return response.record
 }
 

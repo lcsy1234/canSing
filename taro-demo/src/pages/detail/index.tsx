@@ -177,6 +177,16 @@ export default function DetailPage() {
     setCurrentSeconds(nextSeconds)
   }
 
+  const openLyricEditor = async () => {
+    if (!record?.id) {
+      return
+    }
+
+    await Taro.navigateTo({
+      url: `/pages/lyrics-editor/index?id=${record.id}`
+    })
+  }
+
   return (
     <View className='detail-page'>
       {loading ? (
@@ -279,6 +289,9 @@ export default function DetailPage() {
               </View>
               <View className='detail-player__ghost' onClick={() => jumpLine(1)}>
                 <Text>⏭</Text>
+              </View>
+              <View className='detail-player__edit' onClick={() => void openLyricEditor()}>
+                <Text>编辑歌词</Text>
               </View>
             </View>
           </View>

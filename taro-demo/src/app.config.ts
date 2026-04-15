@@ -1,5 +1,11 @@
 export default defineAppConfig({
-  pages: ['pages/index/index', 'pages/processing/index', 'pages/history/index', 'pages/detail/index'],
+  pages: [
+    'pages/index/index',
+    'pages/processing/index',
+    'pages/history/index',
+    'pages/detail/index',
+    'pages/lyrics-editor/index'
+  ],
   window: {
     backgroundColor: '#fffaf6',
     backgroundTextStyle: 'light',

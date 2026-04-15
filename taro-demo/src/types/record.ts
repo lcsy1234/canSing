@@ -31,3 +31,19 @@ export interface PendingAudio {
   sourceType: SourceType
   title?: string
 }
+
+export interface UpdateLyricLinePayload {
+  id?: string
+  startMs: number
+  endMs: number
+  raw: string
+  kana: string
+  romaji: string
+  chinesePhonetic: string
+}
+
+export interface UpdateRecordPayload {
+  title: string
+  artist: string
+  lyricLines: UpdateLyricLinePayload[]
+}
