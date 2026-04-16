@@ -1,6 +1,7 @@
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
+import fs from 'fs'
 import multer from 'multer'
 import path from 'path'
 
@@ -131,6 +132,18 @@ app.use(
 )
 app.use(express.json({ limit: '2mb' }))
 app.use('/uploads', express.static(getUploadsDir()))
+
+const DEBUG_LOG_PATH = path.resolve(__dirname, '../../.cursor/debug-301a33.log')
+
+app.post('/api/debug-log', (req, res) => {
+  try {
+    fs.mkdirSync(path.dirname(DEBUG_LOG_PATH), { recursive: true })
+    fs.appendFileSync(DEBUG_LOG_PATH, `${JSON.stringify(req.body)}\n`, 'utf8')
+    res.status(204).end()
+  } catch {
+    res.status(500).end()
+  }
+})
 
 app.get('/health', (_req, res) => {
   res.json({

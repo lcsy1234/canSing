@@ -2,12 +2,96 @@ import { ScrollView, Slider, Text, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
 
-import { resolveMediaUrl } from '../../constants/api'
+import { API_ORIGIN, resolveMediaUrl } from '../../constants/api'
 import { fetchRecord, updateRecord } from '../../services/api'
 import type { AudioRecord, LyricLine } from '../../types/record'
 import { formatClock, getToneClass } from '../../utils/presentation'
 
 import './index.scss'
+
+const DEBUG_LOG_ENDPOINT = `${API_ORIGIN}/api/debug-log`
+
+function getWeappUserDataPath(): string {
+  const fromTaro = Taro.env.USER_DATA_PATH
+  const wxGlobal = (globalThis as unknown as { wx?: { env?: { USER_DATA_PATH?: string } } }).wx
+  const fromWx = wxGlobal?.env?.USER_DATA_PATH
+  return (fromTaro || fromWx || '').trim()
+}
+
+function formatWechatFsError(error: unknown): string {
+  if (error && typeof error === 'object' && 'errMsg' in error) {
+    return String((error as { errMsg: unknown }).errMsg)
+  }
+  if (error instanceof Error) {
+    return error.message
+  }
+  return typeof error === 'string' ? error : JSON.stringify(error)
+}
+
+function isWeappStorageLimitExceeded(errorMessage: string): boolean {
+  const normalized = (errorMessage || '').toLowerCase()
+  return (
+    normalized.includes('maximum size of the file storage limit is exceeded') ||
+    normalized.includes('the maximum size of the file storage limit is exceeded') ||
+    normalized.includes('fail no space') ||
+    normalized.includes('storage limit')
+  )
+}
+
+function appendWeappDebugLine(payload: Record<string, unknown>) {
+  if (Taro.getEnv() !== Taro.ENV_TYPE.WEAPP) {
+    return
+  }
+
+  const base = getWeappUserDataPath()
+  if (!base) {
+    return
+  }
+
+  const line = `${JSON.stringify({ sessionId: '301a33', timestamp: Date.now(), ...payload })}\n`
+  const fs = Taro.getFileSystemManager()
+  const logPath = `${base}/debug-301a33.log`
+
+  fs.appendFile({
+    filePath: logPath,
+    data: line,
+    encoding: 'utf8',
+    success: () => {},
+    fail: () => {
+      fs.writeFile({
+        filePath: logPath,
+        data: line,
+        encoding: 'utf8',
+        success: () => {},
+        fail: () => {}
+      })
+    }
+  })
+}
+
+function sendDebugLog(payload: Record<string, unknown>) {
+  appendWeappDebugLine(payload)
+  const body = { sessionId: '301a33', timestamp: Date.now(), ...payload }
+
+  if (typeof globalThis.fetch === 'function') {
+    globalThis
+      .fetch(DEBUG_LOG_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+      .catch(() => {})
+    return
+  }
+
+  void Taro.request({
+    url: DEBUG_LOG_ENDPOINT,
+    method: 'POST',
+    header: { 'Content-Type': 'application/json' },
+    data: body,
+    fail: () => {}
+  })
+}
 
 type LyricDisplayMode =
   | 'minimal'
@@ -412,33 +496,239 @@ export default function DetailPage() {
       return
     }
 
+    const safeTitle = record.title.replace(/[\\/:*?"<>|]/g, '-').slice(0, 24) || 'lyrics'
+    const fileName = `${safeTitle}-lyrics.txt`
+    let exportResult: 'file' | 'clipboard' = 'file'
+    let exportedFilePath = ''
+
     try {
-      const safeTitle = record.title.replace(/[\\/:*?"<>|]/g, '-').slice(0, 24) || 'lyrics'
-      const fileName = `${safeTitle}-lyrics.txt`
-      const filePath = `${Taro.env.USER_DATA_PATH}/${fileName}`
-      const fileSystem = Taro.getFileSystemManager()
+      const exportContent = buildExportContent(selectedExportModes)
+      const envType = Taro.getEnv()
 
-      await new Promise<void>((resolve, reject) => {
-        fileSystem.writeFile({
-          filePath,
-          encoding: 'utf8',
-          data: buildExportContent(selectedExportModes),
-          success: () => resolve(),
-          fail: (error) => reject(error)
+      // #region agent log
+      sendDebugLog({
+        runId: 'pre-fix',
+        hypothesisId: 'H1',
+        location: 'detail/index.tsx:handleExportLyrics',
+        message: 'export branch decision',
+        data: {
+          envType,
+          envWeapp: Taro.ENV_TYPE.WEAPP,
+          envWeb: Taro.ENV_TYPE.WEB,
+          isWeapp: envType === Taro.ENV_TYPE.WEAPP,
+          isWeb: envType === Taro.ENV_TYPE.WEB,
+          userDataPathType: typeof Taro.env?.USER_DATA_PATH,
+          resolvedUserDataPath: Boolean(getWeappUserDataPath()),
+          hasDocument: typeof document !== 'undefined',
+          hasWindow: typeof window !== 'undefined'
+        }
+      })
+      // #endregion
+
+      // #region agent log
+      sendDebugLog({
+        runId: 'pre-fix',
+        hypothesisId: 'H4',
+        location: 'detail/index.tsx:handleExportLyrics',
+        message: 'export content built',
+        data: {
+          contentLength: exportContent?.length ?? -1,
+          modeCount: selectedExportModes.length
+        }
+      })
+      // #endregion
+
+      if (envType === Taro.ENV_TYPE.WEAPP) {
+        const userBase = getWeappUserDataPath()
+        if (!userBase) {
+          sendDebugLog({
+            runId: 'pre-fix',
+            hypothesisId: 'H2',
+            location: 'detail/index.tsx:writeFile',
+            message: 'USER_DATA_PATH empty',
+            data: {}
+          })
+          throw new Error('本地用户目录不可用，请重启开发者工具或升级基础库后重试。')
+        }
+
+        const filePath = `${userBase}/${fileName}`
+        const fileSystem = Taro.getFileSystemManager()
+        exportedFilePath = filePath
+
+        try {
+          await new Promise<void>((resolve, reject) => {
+            fileSystem.writeFile({
+              filePath,
+              encoding: 'utf8',
+              data: exportContent,
+              success: () => {
+                // #region agent log
+                sendDebugLog({
+                  runId: 'pre-fix',
+                  hypothesisId: 'H2',
+                  location: 'detail/index.tsx:writeFile',
+                  message: 'weapp writeFile success',
+                  data: { filePath }
+                })
+                // #endregion
+                resolve()
+              },
+              fail: (error) => {
+                // #region agent log
+                sendDebugLog({
+                  runId: 'pre-fix',
+                  hypothesisId: 'H2',
+                  location: 'detail/index.tsx:writeFile',
+                  message: 'weapp writeFile fail',
+                  data: { filePath, errMsg: formatWechatFsError(error) }
+                })
+                // #endregion
+                reject(new Error(formatWechatFsError(error)))
+              }
+            })
+          })
+        } catch (writeError) {
+          const writeErrorMessage = formatWechatFsError(writeError)
+          if (!isWeappStorageLimitExceeded(writeErrorMessage)) {
+            throw writeError
+          }
+
+          sendDebugLog({
+            runId: 'post-fix',
+            hypothesisId: 'H2',
+            location: 'detail/index.tsx:writeFile',
+            message: 'storage limit exceeded, fallback to clipboard',
+            data: { filePath }
+          })
+
+          await Taro.setClipboardData({
+            data: exportContent
+          })
+          exportResult = 'clipboard'
+        }
+      } else if (envType === Taro.ENV_TYPE.WEB) {
+        const blob = new Blob([exportContent], { type: 'text/plain;charset=utf-8' })
+        const downloadUrl = window.URL.createObjectURL(blob)
+        const anchor = document.createElement('a')
+        anchor.href = downloadUrl
+        anchor.download = fileName
+        document.body.appendChild(anchor)
+        anchor.click()
+        document.body.removeChild(anchor)
+        window.URL.revokeObjectURL(downloadUrl)
+        // #region agent log
+        sendDebugLog({
+          runId: 'pre-fix',
+          hypothesisId: 'H3',
+          location: 'detail/index.tsx:webDownload',
+          message: 'web download branch completed',
+          data: { fileName }
         })
-      })
-
-      setIsExportPickerVisible(false)
-      await Taro.showModal({
-        title: '导出成功',
-        content: `已生成：${fileName}\n格式：${selectedExportModes.map((mode) => getModeLabel(mode)).join(' / ')}`,
-        showCancel: false
-      })
+        // #endregion
+      } else {
+        // #region agent log
+        sendDebugLog({
+          runId: 'pre-fix',
+          hypothesisId: 'H1',
+          location: 'detail/index.tsx:handleExportLyrics',
+          message: 'unsupported env branch',
+          data: { envType }
+        })
+        // #endregion
+        throw new Error('当前平台暂不支持直接导出，请在 H5 或微信小程序中使用')
+      }
     } catch (error) {
+      // #region agent log
+      sendDebugLog({
+        runId: 'pre-fix',
+        hypothesisId: 'H5',
+        location: 'detail/index.tsx:handleExportLyrics',
+        message: 'export catch',
+        data: {
+          name: error instanceof Error ? error.name : 'non-error',
+          message: error instanceof Error ? error.message : formatWechatFsError(error)
+        }
+      })
+      // #endregion
       await Taro.showToast({
-        title: error instanceof Error ? error.message : '导出失败',
+        title: error instanceof Error ? error.message : formatWechatFsError(error),
         icon: 'none'
       })
+      return
+    }
+
+    setIsExportPickerVisible(false)
+
+    const formatText = selectedExportModes.map((mode) => getModeLabel(mode)).join(' / ')
+    const successDetail =
+      exportResult === 'file'
+        ? `已生成：${fileName}\n格式：${formatText}`
+        : `本地存储空间不足，已自动复制导出内容到剪贴板。\n格式：${formatText}\n你可以粘贴到记事本后手动保存。`
+
+    try {
+      const modalResult = await Taro.showModal({
+        title: '导出成功',
+        content: successDetail,
+        showCancel:
+          exportResult === 'file' &&
+          Taro.getEnv() === Taro.ENV_TYPE.WEAPP &&
+          Boolean(exportedFilePath),
+        confirmText:
+          exportResult === 'file' &&
+          Taro.getEnv() === Taro.ENV_TYPE.WEAPP &&
+          Boolean(exportedFilePath)
+            ? '立即分享'
+            : '我知道了',
+        cancelText: '稍后'
+      })
+      // #region agent log
+      sendDebugLog({
+        runId: 'post-fix',
+        hypothesisId: 'H5',
+        location: 'detail/index.tsx:handleExportLyrics',
+        message: 'showModal after export ok',
+        data: {}
+      })
+      // #endregion
+
+      if (
+        modalResult.confirm &&
+        exportResult === 'file' &&
+        Taro.getEnv() === Taro.ENV_TYPE.WEAPP &&
+        exportedFilePath
+      ) {
+        const weappApi = globalThis as unknown as {
+          wx?: { shareFileMessage?: (options: { filePath: string; fileName: string }) => void }
+        }
+        const shareFileMessage = weappApi.wx?.shareFileMessage
+        if (typeof shareFileMessage === 'function') {
+          shareFileMessage({
+            filePath: exportedFilePath,
+            fileName
+          })
+          sendDebugLog({
+            runId: 'post-fix',
+            hypothesisId: 'H3',
+            location: 'detail/index.tsx:shareFileMessage',
+            message: 'weapp shareFileMessage triggered by modal confirm',
+            data: { filePath: exportedFilePath }
+          })
+        }
+      }
+    } catch (modalError) {
+      // #region agent log
+      sendDebugLog({
+        runId: 'post-fix',
+        hypothesisId: 'H5',
+        location: 'detail/index.tsx:handleExportLyrics',
+        message: 'showModal failed after export success',
+        data: {
+          name: modalError instanceof Error ? modalError.name : 'non-error',
+          message: modalError instanceof Error ? modalError.message : formatWechatFsError(modalError)
+        }
+      })
+      // #endregion
+      await Taro.showToast({ title: '导出成功', icon: 'success' })
     }
   }
 
