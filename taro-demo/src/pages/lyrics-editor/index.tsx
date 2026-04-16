@@ -1,6 +1,6 @@
 import { Input, Text, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { fetchRecord, updateRecord } from '../../services/api'
 import type { AudioRecord, UpdateLyricLinePayload } from '../../types/record'
@@ -29,6 +29,11 @@ export default function LyricsEditorPage() {
   const [artist, setArtist] = useState('')
   const [lines, setLines] = useState<EditorLine[]>([])
   const [expandedLineIds, setExpandedLineIds] = useState<string[]>([])
+  const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const allowAutoSaveRef = useRef(false)
+  const skipNextAutoSaveRef = useRef(true)
+  const savingRef = useRef(false)
+  const saveQueuedRef = useRef(false)
 
   useEffect(() => {
     const id = Taro.getCurrentInstance().router?.params?.id ?? ''
@@ -41,13 +46,17 @@ export default function LyricsEditorPage() {
     }
 
     void (async () => {
+      allowAutoSaveRef.current = false
+      skipNextAutoSaveRef.current = true
       try {
         setLoading(true)
         setErrorMessage('')
         const record = await fetchRecord(id)
         hydrateFromRecord(record)
+        allowAutoSaveRef.current = true
       } catch (error) {
         setErrorMessage(error instanceof Error ? error.message : '加载歌词失败。')
+        allowAutoSaveRef.current = false
       } finally {
         setLoading(false)
       }
@@ -126,46 +135,131 @@ export default function LyricsEditorPage() {
     })
   }
 
-  const handleSave = async () => {
+  const buildSavePayload = (): { title: string; artist: string; lyricLines: UpdateLyricLinePayload[] } => {
+    const sortedLines = [...lines]
+      .sort((a, b) => a.startMs - b.startMs)
+      .map(({ id, startMs, endMs, raw, kana, romaji, chinesePhonetic }) => ({
+        id,
+        startMs,
+        endMs,
+        raw: raw.trim(),
+        kana: kana.trim(),
+        romaji: romaji.trim(),
+        chinesePhonetic: chinesePhonetic.trim()
+      }))
+
+    return {
+      title: title.trim(),
+      artist: artist.trim(),
+      lyricLines: sortedLines
+    }
+  }
+
+  const validateBeforeSave = () => {
     if (!recordId) {
+      return { ok: false, message: '缺少记录 ID，请返回跟唱页后重试。' }
+    }
+    if (lines.length === 0) {
+      return { ok: false, message: '歌词行不能为空，请至少保留一行。' }
+    }
+    if (lines.some((line) => line.endMs < line.startMs)) {
+      return { ok: false, message: '请先修正时间轴：endMs 不能小于 startMs。' }
+    }
+    return { ok: true, message: '' }
+  }
+
+  const persistToServer = async (options?: { navigateBack?: boolean; showSuccessToast?: boolean }) => {
+    const { ok, message } = validateBeforeSave()
+    if (!ok) {
+      if (options?.showSuccessToast) {
+        await Taro.showToast({ title: message, icon: 'none' })
+      }
       return
     }
 
+    if (savingRef.current) {
+      // 正在保存时用户继续编辑，记录一下，保存结束后再补一次
+      saveQueuedRef.current = true
+      return
+    }
+
+    savingRef.current = true
+    setSaving(true)
+
     try {
-      setSaving(true)
-      const sortedLines = [...lines]
-        .sort((a, b) => a.startMs - b.startMs)
-        .map(({ id, startMs, endMs, raw, kana, romaji, chinesePhonetic }) => ({
-          id,
-          startMs,
-          endMs,
-          raw: raw.trim(),
-          kana: kana.trim(),
-          romaji: romaji.trim(),
-          chinesePhonetic: chinesePhonetic.trim()
-        }))
+      await updateRecord(recordId, buildSavePayload())
 
-      await updateRecord(recordId, {
-        title: title.trim(),
-        artist: artist.trim(),
-        lyricLines: sortedLines
-      })
+      if (options?.showSuccessToast) {
+        await Taro.showToast({ title: '保存成功', icon: 'success' })
+      }
 
-      await Taro.showToast({
-        title: '保存成功',
-        icon: 'success'
-      })
-
-      await Taro.navigateBack()
+      if (options?.navigateBack) {
+        await Taro.navigateBack()
+      }
     } catch (error) {
+      // 自动保存失败只做提示，不会中断编辑
       await Taro.showToast({
         title: error instanceof Error ? error.message : '保存失败',
         icon: 'none'
       })
     } finally {
+      savingRef.current = false
       setSaving(false)
+
+      // 如果保存期间用户又改了东西，补一次
+      if (saveQueuedRef.current && !options?.navigateBack) {
+        saveQueuedRef.current = false
+        void persistToServer({ showSuccessToast: false })
+      } else {
+        saveQueuedRef.current = false
+      }
     }
   }
+
+  const handleSave = async () => {
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current)
+      autoSaveTimerRef.current = null
+    }
+
+    saveQueuedRef.current = false
+    await persistToServer({ navigateBack: true, showSuccessToast: true })
+  }
+
+  useEffect(() => {
+    if (!allowAutoSaveRef.current) return
+    if (!recordId) return
+    if (loading) return
+    if (skipNextAutoSaveRef.current) {
+      skipNextAutoSaveRef.current = false
+      return
+    }
+    if (lines.length === 0) return
+    if (lines.some((line) => line.endMs < line.startMs)) return
+
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current)
+    }
+
+    autoSaveTimerRef.current = setTimeout(() => {
+      void persistToServer({ navigateBack: false, showSuccessToast: false })
+    }, 900)
+
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current)
+        autoSaveTimerRef.current = null
+      }
+    }
+  }, [title, artist, lines, recordId, loading])
+
+  useEffect(() => {
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current)
+      }
+    }
+  }, [])
 
   const toggleLineExpanded = (localId: string) => {
     setExpandedLineIds((current) =>
