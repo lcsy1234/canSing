@@ -105,6 +105,32 @@ export default function LyricsEditorPage() {
     setLines((current) => current.filter((line) => line.localId !== localId))
   }
 
+  const insertLineAbove = (localId: string) => {
+    setLines((current) => {
+      const targetIndex = current.findIndex((line) => line.localId === localId)
+      if (targetIndex < 0) {
+        return current
+      }
+
+      const targetLine = current[targetIndex]
+      const previousLine = current[targetIndex - 1]
+      const fallbackStart = Math.max(0, targetLine.startMs - 1800)
+      const startMs = previousLine ? previousLine.endMs : fallbackStart
+      const endMs = Math.max(startMs, targetLine.startMs)
+      const nextLine: EditorLine = {
+        localId: `new-${Date.now()}-${targetIndex}`,
+        startMs,
+        endMs,
+        raw: '',
+        kana: '',
+        romaji: '',
+        chinesePhonetic: ''
+      }
+
+      return [...current.slice(0, targetIndex), nextLine, ...current.slice(targetIndex)]
+    })
+  }
+
   const handleSave = async () => {
     if (!recordId) {
       return
@@ -184,8 +210,13 @@ export default function LyricsEditorPage() {
             <View className='lyrics-line-card' key={line.localId}>
               <View className='lyrics-line-card__header'>
                 <Text className='lyrics-line-card__index'>{String(index + 1).padStart(2, '0')}</Text>
-                <View className='lyrics-line-card__remove' onClick={() => removeLine(line.localId)}>
-                  <Text>删除</Text>
+                <View className='lyrics-line-card__actions'>
+                  <View className='lyrics-line-card__insert' onClick={() => insertLineAbove(line.localId)}>
+                    <Text>上方新增</Text>
+                  </View>
+                  <View className='lyrics-line-card__remove' onClick={() => removeLine(line.localId)}>
+                    <Text>删除</Text>
+                  </View>
                 </View>
               </View>
 

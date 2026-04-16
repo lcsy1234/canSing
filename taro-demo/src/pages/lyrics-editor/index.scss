@@ -66,16 +66,31 @@
   color: #6f5d88;
 }
 
+.lyrics-line-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lyrics-line-card__insert,
 .lyrics-line-card__remove {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 90px;
+  min-width: 110px;
   height: 52px;
   border-radius: 999px;
+  font-size: 18px;
+}
+
+.lyrics-line-card__insert {
+  background: rgba(227, 234, 255, 0.95);
+  color: #4f5da8;
+}
+
+.lyrics-line-card__remove {
   background: rgba(248, 225, 232, 0.9);
   color: #ad4a67;
-  font-size: 18px;
 }
 
 .lyrics-line-card__times {
