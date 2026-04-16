@@ -11,6 +11,12 @@ interface EditorLine extends UpdateLyricLinePayload {
   localId: string
 }
 
+interface ClearableInputProps {
+  value: string
+  onChange: (value: string) => void
+  type?: 'text' | 'number'
+}
+
 function parseMsInput(value: string): number {
   const parsed = Number(value)
   if (!Number.isFinite(parsed) || parsed < 0) {
@@ -18,6 +24,19 @@ function parseMsInput(value: string): number {
   }
 
   return Math.floor(parsed)
+}
+
+function ClearableInput({ value, onChange, type = 'text' }: ClearableInputProps) {
+  return (
+    <View className='lyrics-editor-page__input-wrap'>
+      <Input className='lyrics-editor-page__input' value={value} type={type} onInput={(event) => onChange(event.detail.value)} />
+      {value ? (
+        <View className='lyrics-editor-page__clear' onClick={() => onChange('')}>
+          <Text>×</Text>
+        </View>
+      ) : null}
+    </View>
+  )
 }
 
 export default function LyricsEditorPage() {
@@ -282,14 +301,10 @@ export default function LyricsEditorPage() {
 
           <View className='lyrics-editor-page__card'>
             <Text className='lyrics-editor-page__label'>歌曲标题</Text>
-            <Input className='lyrics-editor-page__input' value={title} onInput={(event) => setTitle(event.detail.value)} />
+            <ClearableInput value={title} onChange={setTitle} />
 
             <Text className='lyrics-editor-page__label'>歌手</Text>
-            <Input
-              className='lyrics-editor-page__input'
-              value={artist}
-              onInput={(event) => setArtist(event.detail.value)}
-            />
+            <ClearableInput value={artist} onChange={setArtist} />
           </View>
 
           <View className='lyrics-editor-page__section-title'>歌词行</View>
@@ -316,52 +331,37 @@ export default function LyricsEditorPage() {
                     </View>
 
                     <Text className='lyrics-editor-page__label'>中文谐音</Text>
-                    <Input
-                      className='lyrics-editor-page__input'
+                    <ClearableInput
                       value={line.chinesePhonetic}
-                      onInput={(event) => updateLine(line.localId, { chinesePhonetic: event.detail.value })}
+                      onChange={(value) => updateLine(line.localId, { chinesePhonetic: value })}
                     />
 
                     {isExpanded ? (
                       <>
                         <Text className='lyrics-editor-page__label'>原文</Text>
-                        <Input
-                          className='lyrics-editor-page__input'
-                          value={line.raw}
-                          onInput={(event) => updateLine(line.localId, { raw: event.detail.value })}
-                        />
+                        <ClearableInput value={line.raw} onChange={(value) => updateLine(line.localId, { raw: value })} />
 
                         <Text className='lyrics-editor-page__label'>假名</Text>
-                        <Input
-                          className='lyrics-editor-page__input'
-                          value={line.kana}
-                          onInput={(event) => updateLine(line.localId, { kana: event.detail.value })}
-                        />
+                        <ClearableInput value={line.kana} onChange={(value) => updateLine(line.localId, { kana: value })} />
 
                         <Text className='lyrics-editor-page__label'>Romaji</Text>
-                        <Input
-                          className='lyrics-editor-page__input'
-                          value={line.romaji}
-                          onInput={(event) => updateLine(line.localId, { romaji: event.detail.value })}
-                        />
+                        <ClearableInput value={line.romaji} onChange={(value) => updateLine(line.localId, { romaji: value })} />
 
                         <View className='lyrics-line-card__times'>
                           <View className='lyrics-line-card__time-field'>
                             <Text className='lyrics-editor-page__label'>startMs</Text>
-                            <Input
-                              className='lyrics-editor-page__input'
+                            <ClearableInput
                               type='number'
                               value={String(line.startMs)}
-                              onInput={(event) => updateLine(line.localId, { startMs: parseMsInput(event.detail.value) })}
+                              onChange={(value) => updateLine(line.localId, { startMs: parseMsInput(value) })}
                             />
                           </View>
                           <View className='lyrics-line-card__time-field'>
                             <Text className='lyrics-editor-page__label'>endMs</Text>
-                            <Input
-                              className='lyrics-editor-page__input'
+                            <ClearableInput
                               type='number'
                               value={String(line.endMs)}
-                              onInput={(event) => updateLine(line.localId, { endMs: parseMsInput(event.detail.value) })}
+                              onChange={(value) => updateLine(line.localId, { endMs: parseMsInput(value) })}
                             />
                           </View>
                         </View>
