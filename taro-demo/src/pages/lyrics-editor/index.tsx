@@ -1,6 +1,6 @@
 import { Input, Text, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { fetchRecord, updateRecord } from '../../services/api'
 import type { AudioRecord, UpdateLyricLinePayload } from '../../types/record'
@@ -28,6 +28,7 @@ export default function LyricsEditorPage() {
   const [title, setTitle] = useState('')
   const [artist, setArtist] = useState('')
   const [lines, setLines] = useState<EditorLine[]>([])
+  const [expandedLineIds, setExpandedLineIds] = useState<string[]>([])
 
   useEffect(() => {
     const id = Taro.getCurrentInstance().router?.params?.id ?? ''
@@ -56,6 +57,7 @@ export default function LyricsEditorPage() {
   const hydrateFromRecord = (record: AudioRecord) => {
     setTitle(record.title)
     setArtist(record.artist)
+    setExpandedLineIds([])
     setLines(
       record.lyricLines.map((line, index) => ({
         id: line.id,
@@ -69,14 +71,6 @@ export default function LyricsEditorPage() {
       }))
     )
   }
-
-  const isSubmittable = useMemo(() => {
-    if (!title.trim() || !artist.trim() || lines.length === 0) {
-      return false
-    }
-
-    return lines.every((line) => line.raw.trim() && line.startMs >= 0 && line.endMs >= line.startMs)
-  }, [artist, lines, title])
 
   const updateLine = (localId: string, patch: Partial<EditorLine>) => {
     setLines((current) => current.map((line) => (line.localId === localId ? { ...line, ...patch } : line)))
@@ -103,6 +97,7 @@ export default function LyricsEditorPage() {
 
   const removeLine = (localId: string) => {
     setLines((current) => current.filter((line) => line.localId !== localId))
+    setExpandedLineIds((current) => current.filter((id) => id !== localId))
   }
 
   const insertLineAbove = (localId: string) => {
@@ -133,14 +128,6 @@ export default function LyricsEditorPage() {
 
   const handleSave = async () => {
     if (!recordId) {
-      return
-    }
-
-    if (!isSubmittable) {
-      await Taro.showToast({
-        title: '请完善标题、歌手和歌词时间轴',
-        icon: 'none'
-      })
       return
     }
 
@@ -180,6 +167,12 @@ export default function LyricsEditorPage() {
     }
   }
 
+  const toggleLineExpanded = (localId: string) => {
+    setExpandedLineIds((current) =>
+      current.includes(localId) ? current.filter((id) => id !== localId) : [...current, localId]
+    )
+  }
+
   return (
     <View className='lyrics-editor-page'>
       {loading ? (
@@ -208,66 +201,81 @@ export default function LyricsEditorPage() {
           <View className='lyrics-editor-page__section-title'>歌词行</View>
           {lines.map((line, index) => (
             <View className='lyrics-line-card' key={line.localId}>
-              <View className='lyrics-line-card__header'>
-                <Text className='lyrics-line-card__index'>{String(index + 1).padStart(2, '0')}</Text>
-                <View className='lyrics-line-card__actions'>
-                  <View className='lyrics-line-card__insert' onClick={() => insertLineAbove(line.localId)}>
-                    <Text>上方新增</Text>
-                  </View>
-                  <View className='lyrics-line-card__remove' onClick={() => removeLine(line.localId)}>
-                    <Text>删除</Text>
-                  </View>
-                </View>
-              </View>
+              {(() => {
+                const isExpanded = expandedLineIds.includes(line.localId)
 
-              <Text className='lyrics-editor-page__label'>原文</Text>
-              <Input
-                className='lyrics-editor-page__input'
-                value={line.raw}
-                onInput={(event) => updateLine(line.localId, { raw: event.detail.value })}
-              />
+                return (
+                  <>
+                    <View className='lyrics-line-card__header'>
+                      <Text className='lyrics-line-card__index'>{String(index + 1).padStart(2, '0')}</Text>
+                      <View className='lyrics-line-card__actions'>
+                        <View className='lyrics-line-card__toggle' onClick={() => toggleLineExpanded(line.localId)}>
+                          <Text>{isExpanded ? '收起' : '展开'}</Text>
+                        </View>
+                        <View className='lyrics-line-card__insert' onClick={() => insertLineAbove(line.localId)}>
+                          <Text>上方新增</Text>
+                        </View>
+                        <View className='lyrics-line-card__remove' onClick={() => removeLine(line.localId)}>
+                          <Text>删除</Text>
+                        </View>
+                      </View>
+                    </View>
 
-              <Text className='lyrics-editor-page__label'>假名</Text>
-              <Input
-                className='lyrics-editor-page__input'
-                value={line.kana}
-                onInput={(event) => updateLine(line.localId, { kana: event.detail.value })}
-              />
+                    <Text className='lyrics-editor-page__label'>中文谐音</Text>
+                    <Input
+                      className='lyrics-editor-page__input'
+                      value={line.chinesePhonetic}
+                      onInput={(event) => updateLine(line.localId, { chinesePhonetic: event.detail.value })}
+                    />
 
-              <Text className='lyrics-editor-page__label'>Romaji</Text>
-              <Input
-                className='lyrics-editor-page__input'
-                value={line.romaji}
-                onInput={(event) => updateLine(line.localId, { romaji: event.detail.value })}
-              />
+                    {isExpanded ? (
+                      <>
+                        <Text className='lyrics-editor-page__label'>原文</Text>
+                        <Input
+                          className='lyrics-editor-page__input'
+                          value={line.raw}
+                          onInput={(event) => updateLine(line.localId, { raw: event.detail.value })}
+                        />
 
-              <Text className='lyrics-editor-page__label'>中文谐音</Text>
-              <Input
-                className='lyrics-editor-page__input'
-                value={line.chinesePhonetic}
-                onInput={(event) => updateLine(line.localId, { chinesePhonetic: event.detail.value })}
-              />
+                        <Text className='lyrics-editor-page__label'>假名</Text>
+                        <Input
+                          className='lyrics-editor-page__input'
+                          value={line.kana}
+                          onInput={(event) => updateLine(line.localId, { kana: event.detail.value })}
+                        />
 
-              <View className='lyrics-line-card__times'>
-                <View className='lyrics-line-card__time-field'>
-                  <Text className='lyrics-editor-page__label'>startMs</Text>
-                  <Input
-                    className='lyrics-editor-page__input'
-                    type='number'
-                    value={String(line.startMs)}
-                    onInput={(event) => updateLine(line.localId, { startMs: parseMsInput(event.detail.value) })}
-                  />
-                </View>
-                <View className='lyrics-line-card__time-field'>
-                  <Text className='lyrics-editor-page__label'>endMs</Text>
-                  <Input
-                    className='lyrics-editor-page__input'
-                    type='number'
-                    value={String(line.endMs)}
-                    onInput={(event) => updateLine(line.localId, { endMs: parseMsInput(event.detail.value) })}
-                  />
-                </View>
-              </View>
+                        <Text className='lyrics-editor-page__label'>Romaji</Text>
+                        <Input
+                          className='lyrics-editor-page__input'
+                          value={line.romaji}
+                          onInput={(event) => updateLine(line.localId, { romaji: event.detail.value })}
+                        />
+
+                        <View className='lyrics-line-card__times'>
+                          <View className='lyrics-line-card__time-field'>
+                            <Text className='lyrics-editor-page__label'>startMs</Text>
+                            <Input
+                              className='lyrics-editor-page__input'
+                              type='number'
+                              value={String(line.startMs)}
+                              onInput={(event) => updateLine(line.localId, { startMs: parseMsInput(event.detail.value) })}
+                            />
+                          </View>
+                          <View className='lyrics-line-card__time-field'>
+                            <Text className='lyrics-editor-page__label'>endMs</Text>
+                            <Input
+                              className='lyrics-editor-page__input'
+                              type='number'
+                              value={String(line.endMs)}
+                              onInput={(event) => updateLine(line.localId, { endMs: parseMsInput(event.detail.value) })}
+                            />
+                          </View>
+                        </View>
+                      </>
+                    ) : null}
+                  </>
+                )
+              })()}
             </View>
           ))}
 

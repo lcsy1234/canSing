@@ -1,5 +1,977 @@
 [
   {
+    "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a",
+    "title": "c0421a680e494820b36421f181673a7d",
+    "artist": "上传音频",
+    "sourceType": "upload",
+    "fileName": "8FitxPLuKC491fee717b15d89fac3ec1b8a856c85996.mp3",
+    "audioUrl": "/uploads/1776332726095-8FitxPLuKC491fee717b15d89fac3ec1b8a856c85996.mp3",
+    "createdAt": "2026-04-16T09:45:32.283Z",
+    "durationMs": 256980,
+    "durationLabel": "04:17",
+    "excerpt": "",
+    "lyricLines": [
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-edit-1776333411382-1",
+        "index": 1,
+        "startMs": 2900,
+        "endMs": 4700,
+        "raw": "",
+        "kana": "",
+        "romaji": "",
+        "chinesePhonetic": "bsjbjsjvdhbdn"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-edit-1776333343206-1",
+        "index": 2,
+        "startMs": 4700,
+        "endMs": 6500,
+        "raw": "",
+        "kana": "",
+        "romaji": "",
+        "chinesePhonetic": "大数据包括解放巴黎"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-1",
+        "index": 3,
+        "startMs": 6500,
+        "endMs": 12000,
+        "raw": "今何にあなたのことを夢に見る",
+        "kana": "いま なに に あなた の こと を ゆめ に みる",
+        "romaji": "ima nani ni anata no koto o yume ni miru",
+        "chinesePhonetic": "伊吗 那你 你 啊那塔 诺 口托 哦 优美 你 米鲁"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-2",
+        "index": 4,
+        "startMs": 12000,
+        "endMs": 17520,
+        "raw": "忘れたものを取りに帰るように",
+        "kana": "わすれ た もの を とり に かえる よう に",
+        "romaji": "wasure ta mono o tori ni kaeru yo ni",
+        "chinesePhonetic": "哇苏蕾 塔 莫诺 哦 托哩 你 卡诶鲁 哟 你"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-3",
+        "index": 5,
+        "startMs": 17520,
+        "endMs": 23880,
+        "raw": "古ぎた思い出の誇りは",
+        "kana": "こ ぎた おもいで の ほこり は",
+        "romaji": "ko gita omoide no hokori wa",
+        "chinesePhonetic": "口 吉塔 哦莫伊得 诺 吼口哩 哇"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-4",
+        "index": 6,
+        "startMs": 25880,
+        "endMs": 31280,
+        "raw": "戻わない幸せがあることを",
+        "kana": "もど わ ない しあわせ が ある こと を",
+        "romaji": "modo wa nai shiawase ga aru koto o",
+        "chinesePhonetic": "莫多 哇 那伊 西啊哇塞 嘎 啊鲁 口托 哦"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-5",
+        "index": 7,
+        "startMs": 31280,
+        "endMs": 36880,
+        "raw": "最後にあなたが教えてくれた",
+        "kana": "さいご に あなた が おしえ て くれ た",
+        "romaji": "saigo ni anata ga oshie te kure ta",
+        "chinesePhonetic": "萨伊购 你 啊那塔 嘎 哦西诶 忒 苦蕾 塔"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-6",
+        "index": 8,
+        "startMs": 36880,
+        "endMs": 42380,
+        "raw": "別に隠してた暗い過去も",
+        "kana": "べつに かくし て た くらい かこ も",
+        "romaji": "betsuni kakushi te ta kurai kako mo",
+        "chinesePhonetic": "贝次你 卡苦西 忒 塔 苦啦伊 卡口 莫"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-7",
+        "index": 9,
+        "startMs": 42380,
+        "endMs": 48080,
+        "raw": "あなたが居なきゃ永遠にくらいまま",
+        "kana": "あなた が い なきゃ えいえん に くらい まま",
+        "romaji": "anata ga i nakya eien ni kurai mama",
+        "chinesePhonetic": "啊那塔 嘎 伊 那基呀 诶伊诶嗯 你 苦啦伊 吗吗"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-8",
+        "index": 10,
+        "startMs": 48080,
+        "endMs": 53880,
+        "raw": "人もこれ以上気づつくことになった",
+        "kana": "ひと も これ いじょう き づつくことになった",
+        "romaji": "hito mo kore ijo ki zutsukukotoninatta",
+        "chinesePhonetic": "嘻托 莫 口蕾 伊久 基 祖次苦口托你那克塔"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-9",
+        "index": 11,
+        "startMs": 53880,
+        "endMs": 58680,
+        "raw": "あの日はしないとわかっている",
+        "kana": "あの ひ は し ない と わかって いる",
+        "romaji": "ano hi wa shi nai to wakatte iru",
+        "chinesePhonetic": "啊诺 嘻 哇 西 那伊 托 哇卡克忒 伊鲁"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-10",
+        "index": 12,
+        "startMs": 58680,
+        "endMs": 61480,
+        "raw": "あの日の悲しみさえ",
+        "kana": "あの ひ の かなしみ さえ",
+        "romaji": "ano hi no kanashimi sae",
+        "chinesePhonetic": "啊诺 嘻 诺 卡那西米 萨诶"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-11",
+        "index": 13,
+        "startMs": 61480,
+        "endMs": 64180,
+        "raw": "あの日の苦しみさえ",
+        "kana": "あの ひ の くるしみ さえ",
+        "romaji": "ano hi no kurushimi sae",
+        "chinesePhonetic": "啊诺 嘻 诺 苦鲁西米 萨诶"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-12",
+        "index": 14,
+        "startMs": 64180,
+        "endMs": 67180,
+        "raw": "その全てを愛してた",
+        "kana": "その すべて を あいし て た",
+        "romaji": "sono subete o aishi te ta",
+        "chinesePhonetic": "搜诺 苏贝忒 哦 啊伊西 忒 塔"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-13",
+        "index": 15,
+        "startMs": 67180,
+        "endMs": 69680,
+        "raw": "なかったと思うに",
+        "kana": "なかった と おもう に",
+        "romaji": "nakatta to omou ni",
+        "chinesePhonetic": "那卡克塔 托 哦莫乌 你"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-14",
+        "index": 16,
+        "startMs": 69680,
+        "endMs": 72580,
+        "raw": "胸に残り離れない",
+        "kana": "むね に のこり はなれ ない",
+        "romaji": "mune ni nokori hanare nai",
+        "chinesePhonetic": "木内 你 诺口哩 哈那蕾 那伊"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-15",
+        "index": 17,
+        "startMs": 72580,
+        "endMs": 75580,
+        "raw": "苦いレモンの理由",
+        "kana": "にがい レモン の りゆう",
+        "romaji": "nigai remon no riyu",
+        "chinesePhonetic": "你嘎伊 蕾莫嗯 诺 哩优"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-16",
+        "index": 18,
+        "startMs": 75580,
+        "endMs": 81080,
+        "raw": "雨が降りやぶんまでは変えれない",
+        "kana": "あめ が ふり や ぶん まで は かえ れ ない",
+        "romaji": "ame ga furi ya bun made wa kae re nai",
+        "chinesePhonetic": "啊美 嘎 福哩 呀 不嗯 吗得 哇 卡诶 蕾 那伊"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-17",
+        "index": 19,
+        "startMs": 81080,
+        "endMs": 87080,
+        "raw": "今でもあなたは私の光",
+        "kana": "いま でも あなた は わたし の ひかり",
+        "romaji": "ima demo anata wa watashi no hikari",
+        "chinesePhonetic": "伊吗 得莫 啊那塔 哇 哇塔西 诺 嘻卡哩"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-18",
+        "index": 20,
+        "startMs": 87080,
+        "endMs": 103280,
+        "raw": "暗いアミであなたの背負なそうった",
+        "kana": "くらい アミ で あなた の せおい なそ うった",
+        "romaji": "kurai ami de anata no seoi naso utta",
+        "chinesePhonetic": "苦啦伊 啊米 得 啊那塔 诺 塞哦伊 那搜 乌克塔"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-19",
+        "index": 21,
+        "startMs": 103280,
+        "endMs": 108780,
+        "raw": "その人格をせんめに覚えている",
+        "kana": "その じんかく を せん め に おぼえ て いる",
+        "romaji": "sono jinkaku o sen me ni oboe te iru",
+        "chinesePhonetic": "搜诺 机嗯卡苦 哦 塞嗯 美 你 哦波诶 忒 伊鲁"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-20",
+        "index": 22,
+        "startMs": 108780,
+        "endMs": 114280,
+        "raw": "受け止めきれないものとであなたに",
+        "kana": "うけとめ きれ ない もの と で あなた に",
+        "romaji": "uketome kire nai mono to de anata ni",
+        "chinesePhonetic": "乌科托美 基蕾 那伊 莫诺 托 得 啊那塔 你"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-21",
+        "index": 23,
+        "startMs": 114280,
+        "endMs": 120080,
+        "raw": "溢れてやまないのは涙だけ",
+        "kana": "あふれ て やま ない の は なみだ だけ",
+        "romaji": "afure te yama nai no wa namida dake",
+        "chinesePhonetic": "啊福蕾 忒 呀吗 那伊 诺 哇 那米达 达科"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-22",
+        "index": 24,
+        "startMs": 120080,
+        "endMs": 122980,
+        "raw": "何をしていたの",
+        "kana": "なに を し て い た の",
+        "romaji": "nani o shi te i ta no",
+        "chinesePhonetic": "那你 哦 西 忒 伊 塔 诺"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-23",
+        "index": 25,
+        "startMs": 122980,
+        "endMs": 125680,
+        "raw": "何を見ていたの",
+        "kana": "なに を み て い た の",
+        "romaji": "nani o mi te i ta no",
+        "chinesePhonetic": "那你 哦 米 忒 伊 塔 诺"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-24",
+        "index": 26,
+        "startMs": 125680,
+        "endMs": 128280,
+        "raw": "私の知らないよ",
+        "kana": "わたし の しら ない よ",
+        "romaji": "watashi no shira nai yo",
+        "chinesePhonetic": "哇塔西 诺 西啦 那伊 哟"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-25",
+        "index": 27,
+        "startMs": 128280,
+        "endMs": 130480,
+        "raw": "僕はもうね",
+        "kana": "ぼく はもう ね",
+        "romaji": "boku hamo ne",
+        "chinesePhonetic": "波苦 哈莫 内"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-26",
+        "index": 28,
+        "startMs": 130480,
+        "endMs": 133280,
+        "raw": "どこかであなたが今",
+        "kana": "どこ か で あなた が いま",
+        "romaji": "doko ka de anata ga ima",
+        "chinesePhonetic": "多口 卡 得 啊那塔 嘎 伊吗"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-27",
+        "index": 29,
+        "startMs": 133280,
+        "endMs": 137280,
+        "raw": "私と同じような涙にくれ",
+        "kana": "わたし と おなじ よう な なみだ に くれ",
+        "romaji": "watashi to onaji yo na namida ni kure",
+        "chinesePhonetic": "哇塔西 托 哦那机 哟 那 那米达 你 苦蕾"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-28",
+        "index": 30,
+        "startMs": 137280,
+        "endMs": 141280,
+        "raw": "寂さの中にいるなら",
+        "kana": "さび さ の なか に いる なら",
+        "romaji": "sabi sa no naka ni iru nara",
+        "chinesePhonetic": "萨比 萨 诺 那卡 你 伊鲁 那啦"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-29",
+        "index": 31,
+        "startMs": 141280,
+        "endMs": 147280,
+        "raw": "私の言葉と僕が忘れてください",
+        "kana": "わたし の ことば と ぼく が わすれ て ください",
+        "romaji": "watashi no kotoba to boku ga wasure te kudasai",
+        "chinesePhonetic": "哇塔西 诺 口托吧 托 波苦 嘎 哇苏蕾 忒 苦达萨伊"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-30",
+        "index": 32,
+        "startMs": 147280,
+        "endMs": 152780,
+        "raw": "そんなこととことから願うほどに",
+        "kana": "そんな こと と こと から ねがう ほど に",
+        "romaji": "sonna koto to koto kara negau hodo ni",
+        "chinesePhonetic": "搜嗯那 口托 托 口托 卡啦 内嘎乌 吼多 你"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-31",
+        "index": 33,
+        "startMs": 152780,
+        "endMs": 161280,
+        "raw": "今でもあなたは私の光",
+        "kana": "いま でも あなた は わたし の ひかり",
+        "romaji": "ima demo anata wa watashi no hikari",
+        "chinesePhonetic": "伊吗 得莫 啊那塔 哇 哇塔西 诺 嘻卡哩"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-32",
+        "index": 34,
+        "startMs": 161280,
+        "endMs": 166980,
+        "raw": "自分が模様で",
+        "kana": "じぶん が もよう で",
+        "romaji": "jibun ga moyo de",
+        "chinesePhonetic": "机不嗯 嘎 莫哟 得"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-33",
+        "index": 35,
+        "startMs": 166980,
+        "endMs": 172380,
+        "raw": "過ごしてたあなたに",
+        "kana": "すごし て た あなた に",
+        "romaji": "sugoshi te ta anata ni",
+        "chinesePhonetic": "苏购西 忒 塔 啊那塔 你"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-34",
+        "index": 36,
+        "startMs": 172380,
+        "endMs": 177980,
+        "raw": "あれから模様に",
+        "kana": "あれ から もよう に",
+        "romaji": "are kara moyo ni",
+        "chinesePhonetic": "啊蕾 卡啦 莫哟 你"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-35",
+        "index": 37,
+        "startMs": 177980,
+        "endMs": 183080,
+        "raw": "勇気ができない",
+        "kana": "ゆうき が でき ない",
+        "romaji": "yuki ga deki nai",
+        "chinesePhonetic": "优基 嘎 得基 那伊"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-36",
+        "index": 38,
+        "startMs": 183080,
+        "endMs": 188980,
+        "raw": "あんなにそばにいたのに",
+        "kana": "あんなに そば に い た のに",
+        "romaji": "annani soba ni i ta noni",
+        "chinesePhonetic": "啊嗯那你 搜吧 你 伊 塔 诺你"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-37",
+        "index": 39,
+        "startMs": 188980,
+        "endMs": 193980,
+        "raw": "まるで嘘見た",
+        "kana": "まるで うそ み た",
+        "romaji": "marude uso mi ta",
+        "chinesePhonetic": "吗鲁得 乌搜 米 塔"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-38",
+        "index": 40,
+        "startMs": 193980,
+        "endMs": 199980,
+        "raw": "とても忘れられない",
+        "kana": "とても わすれ られ ない",
+        "romaji": "totemo wasure rare nai",
+        "chinesePhonetic": "托忒莫 哇苏蕾 啦蕾 那伊"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-39",
+        "index": 41,
+        "startMs": 199980,
+        "endMs": 205980,
+        "raw": "それだけが確か",
+        "kana": "それ だけ が たしか",
+        "romaji": "sore dake ga tashika",
+        "chinesePhonetic": "搜蕾 达科 嘎 塔西卡"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-40",
+        "index": 42,
+        "startMs": 205980,
+        "endMs": 212980,
+        "raw": "あの日の悲しみさえ",
+        "kana": "あの ひ の かなしみ さえ",
+        "romaji": "ano hi no kanashimi sae",
+        "chinesePhonetic": "啊诺 嘻 诺 卡那西米 萨诶"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-41",
+        "index": 43,
+        "startMs": 212980,
+        "endMs": 215980,
+        "raw": "あの日の苦しみさえ",
+        "kana": "あの ひ の くるしみ さえ",
+        "romaji": "ano hi no kurushimi sae",
+        "chinesePhonetic": "啊诺 嘻 诺 苦鲁西米 萨诶"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-42",
+        "index": 44,
+        "startMs": 215980,
+        "endMs": 221480,
+        "raw": "その全てを愛してたあなたを共に",
+        "kana": "その すべて を あいし て た あなた を ともに",
+        "romaji": "sono subete o aishi te ta anata o tomoni",
+        "chinesePhonetic": "搜诺 苏贝忒 哦 啊伊西 忒 塔 啊那塔 哦 托莫你"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-43",
+        "index": 45,
+        "startMs": 221480,
+        "endMs": 224480,
+        "raw": "無鳴り残り離れない",
+        "kana": "む なり のこり はなれ ない",
+        "romaji": "mu nari nokori hanare nai",
+        "chinesePhonetic": "木 那哩 诺口哩 哈那蕾 那伊"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-44",
+        "index": 46,
+        "startMs": 224480,
+        "endMs": 227280,
+        "raw": "理解はもう何を",
+        "kana": "りかい は もう なに を",
+        "romaji": "rikai wa mo nani o",
+        "chinesePhonetic": "哩卡伊 哇 莫 那你 哦"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-45",
+        "index": 47,
+        "startMs": 227280,
+        "endMs": 232980,
+        "raw": "雨が降りやむまでは変えられない",
+        "kana": "あめ が おり やむ まで は かえ られ ない",
+        "romaji": "ame ga ori yamu made wa kae rare nai",
+        "chinesePhonetic": "啊美 嘎 哦哩 呀木 吗得 哇 卡诶 啦蕾 那伊"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-46",
+        "index": 48,
+        "startMs": 232980,
+        "endMs": 238480,
+        "raw": "切り分けた果実の方のように",
+        "kana": "きりわけ た かじつ の ほう の よう に",
+        "romaji": "kiriwake ta kajitsu no ho no yo ni",
+        "chinesePhonetic": "基哩哇科 塔 卡机次 诺 吼 诺 哟 你"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-47",
+        "index": 49,
+        "startMs": 238480,
+        "endMs": 243980,
+        "raw": "今でもあなたは私の光",
+        "kana": "いま でも あなた は わたし の ひかり",
+        "romaji": "ima demo anata wa watashi no hikari",
+        "chinesePhonetic": "伊吗 得莫 啊那塔 哇 哇塔西 诺 嘻卡哩"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-48",
+        "index": 50,
+        "startMs": 243980,
+        "endMs": 252980,
+        "raw": "(♪)",
+        "kana": "(♪)",
+        "romaji": "(♪)",
+        "chinesePhonetic": "( )"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-49",
+        "index": 51,
+        "startMs": 252980,
+        "endMs": 254980,
+        "raw": "[音楽]",
+        "kana": "[ おんがく ]",
+        "romaji": "[ ongaku ]",
+        "chinesePhonetic": "哦嗯嘎苦"
+      },
+      {
+        "id": "6c0087ad-dc5f-4a1f-bfa3-8c26eda4417a-50",
+        "index": 52,
+        "startMs": 254980,
+        "endMs": 256980,
+        "raw": "さようなら!",
+        "kana": "さようなら!",
+        "romaji": "sayonara!",
+        "chinesePhonetic": "萨哟那啦!"
+      }
+    ]
+  },
+  {
+    "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57",
+    "title": "ninelie-Aimer.chelly#gfmgO",
+    "artist": "上传音频",
+    "sourceType": "upload",
+    "fileName": "3JshZVlu5El7738ebe0d5b80a91cacd1d89842db5915.mp3",
+    "audioUrl": "/uploads/1776332185746-3JshZVlu5El7738ebe0d5b80a91cacd1d89842db5915.mp3",
+    "createdAt": "2026-04-16T09:36:30.788Z",
+    "durationMs": 262960,
+    "durationLabel": "04:23",
+    "excerpt": "",
+    "lyricLines": [
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-edit-1776332406499-1",
+        "index": 1,
+        "startMs": 20200,
+        "endMs": 22000,
+        "raw": "",
+        "kana": "",
+        "romaji": "",
+        "chinesePhonetic": "打算道歉啊你打好几遍我是v肯德基不求闻达"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-1",
+        "index": 2,
+        "startMs": 22000,
+        "endMs": 32000,
+        "raw": "君を繋ぐ空の星が一つ音を立てても",
+        "kana": "きみ を つなぐ そら の ほし が ひとつ おん を たて て も",
+        "romaji": "kimi o tsunagu sora no hoshi ga hitotsu on o tate te mo",
+        "chinesePhonetic": "基米 哦 次那古 搜啦 诺 吼西 嘎 嘻托次 哦嗯 哦 塔忒 忒 莫"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-2",
+        "index": 3,
+        "startMs": 33000,
+        "endMs": 49000,
+        "raw": "どこに同じ雨に向けた夢ばかり乾くだけを泣いてもまず",
+        "kana": "どこ に おなじ あめ に むけ た ゆめ ばかり かわく だけ を ない て も まず",
+        "romaji": "doko ni onaji ame ni muke ta yume bakari kawaku dake o nai te mo mazu",
+        "chinesePhonetic": "多口 你 哦那机 啊美 你 木科 塔 优美 吧卡哩 卡哇苦 达科 哦 那伊 忒 莫 吗祖"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-3",
+        "index": 4,
+        "startMs": 50000,
+        "endMs": 65000,
+        "raw": "答えにつくれた繰り返せない訳に崩れたさ",
+        "kana": "こたえ に つくれ た くりかえせ ない わけ に くずれ た さ",
+        "romaji": "kotae ni tsukure ta kurikaese nai wake ni kuzure ta sa",
+        "chinesePhonetic": "口塔诶 你 次苦蕾 塔 苦哩卡诶塞 那伊 哇科 你 苦祖蕾 塔 萨"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-4",
+        "index": 5,
+        "startMs": 65000,
+        "endMs": 77000,
+        "raw": "つかまえたディーチームで遅れたストリート影響がどこへ叫びと泣いても",
+        "kana": "つかまえ た ディーチーム で おくれ た ストリート えいきょう が どこ へ さけび と ない て も",
+        "romaji": "tsukamae ta deichimu de okure ta sutorito eikyo ga doko e sakebi to nai te mo",
+        "chinesePhonetic": "次卡吗诶 塔 得伊七木 得 哦苦蕾 塔 苏托哩托 诶伊基哟 嘎 多口 诶 萨科比 托 那伊 忒 莫"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-5",
+        "index": 6,
+        "startMs": 77000,
+        "endMs": 90000,
+        "raw": "あれだとね恋もくくれないだから サイズトムスターメト",
+        "kana": "あれ だ と ね こい も くく れ ない だ から サイズトムスターメト",
+        "romaji": "are da to ne koi mo kuku re nai da kara saizutomusutameto",
+        "chinesePhonetic": "啊蕾 达 托 内 口伊 莫 苦苦 蕾 那伊 达 卡啦 萨伊祖托木苏塔美托"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-6",
+        "index": 7,
+        "startMs": 91000,
+        "endMs": 114000,
+        "raw": "♪~",
+        "kana": "♪~",
+        "romaji": "♪~",
+        "chinesePhonetic": ""
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-7",
+        "index": 8,
+        "startMs": 114000,
+        "endMs": 126000,
+        "raw": "そっとと泣けるのよに甘るいいすが必要としても",
+        "kana": "そっと と なける の よ に あま るい いす が ひつよう として も",
+        "romaji": "sotto to nakeru no yo ni ama rui isu ga hitsuyo toshite mo",
+        "chinesePhonetic": "搜克托 托 那科鲁 诺 哟 你 啊吗 鲁伊 伊苏 嘎 嘻次哟 托西忒 莫"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-8",
+        "index": 9,
+        "startMs": 126000,
+        "endMs": 137000,
+        "raw": "永遠の愛いつわりと同じ出す 手空で並ぶだけの衝動",
+        "kana": "えいえん の あい いつわり と おなじ だす て そら で ならぶ だけ の しょうどう",
+        "romaji": "eien no ai itsuwari to onaji dasu te sora de narabu dake no shodo",
+        "chinesePhonetic": "诶伊诶嗯 诺 啊伊 伊次哇哩 托 哦那机 达苏 忒 搜啦 得 那啦不 达科 诺 秀多"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-9",
+        "index": 10,
+        "startMs": 137000,
+        "endMs": 147000,
+        "raw": "あ転を中に揃えたりやだし",
+        "kana": "あ てん を なか に そろえ たり や だし",
+        "romaji": "a ten o naka ni soroe tari ya dashi",
+        "chinesePhonetic": "啊 忒嗯 哦 那卡 你 搜咯诶 塔哩 呀 达西"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-10",
+        "index": 11,
+        "startMs": 147000,
+        "endMs": 157000,
+        "raw": "ずっと甘ちさらしいこんなか知り残る",
+        "kana": "ずっと あま ちさ らしい こんな か しり のこる",
+        "romaji": "zutto ama chisa rashii konna ka shiri nokoru",
+        "chinesePhonetic": "祖克托 啊吗 七萨 啦西伊 口嗯那 卡 西哩 诺口鲁"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-11",
+        "index": 12,
+        "startMs": 157000,
+        "endMs": 169000,
+        "raw": "Dumpingon your changing mind 可能なとあった日々 君の夢が横で連れても",
+        "kana": "Dumpingon your changing mind かのう な と あった ひび きみ の ゆめ が よこ で つれ て も",
+        "romaji": "Dumpingon your changing mind kano na to atta hibi kimi no yume ga yoko de tsure te mo",
+        "chinesePhonetic": "d乌m皮嗯购嗯 哟乌r 恰嗯吉嗯g 米嗯d 卡诺 那 托 啊克塔 嘻比 基米 诺 优美 嘎 哟口 得 次蕾 忒 莫"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-12",
+        "index": 13,
+        "startMs": 169000,
+        "endMs": 181000,
+        "raw": "僕の歌いはしばかけようだからサイズトムスターメト",
+        "kana": "ぼく の うたい は しば かけよう だ から サイズトムスターメト",
+        "romaji": "boku no utai wa shiba kakeyo da kara saizutomusutameto",
+        "chinesePhonetic": "波苦 诺 乌塔伊 哇 西吧 卡科哟 达 卡啦 萨伊祖托木苏塔美托"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-13",
+        "index": 14,
+        "startMs": 184000,
+        "endMs": 195000,
+        "raw": "どこまでも硬かみそったりするすぎた街なみは 終わりの愛と遠くへ",
+        "kana": "どこ まで も かた かみ そっ たり する すぎ た まち なみ は おわり の あい と とおく へ",
+        "romaji": "doko made mo kata kami sotsu tari suru sugi ta machi nami wa owari no ai to toku e",
+        "chinesePhonetic": "多口 吗得 莫 卡塔 卡米 搜次 塔哩 苏鲁 苏吉 塔 吗七 那米 哇 哦哇哩 诺 啊伊 托 托苦 诶"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-14",
+        "index": 15,
+        "startMs": 195000,
+        "endMs": 203000,
+        "raw": "伝えれない刻みかけのイメージに 目が覚めた手空",
+        "kana": "つたえ れ ない きざみ かけ の イメージ に め が さめ た て そら",
+        "romaji": "tsutae re nai kizami kake no imeji ni me ga same ta te sora",
+        "chinesePhonetic": "次塔诶 蕾 那伊 基杂米 卡科 诺 伊美机 你 美 嘎 萨美 塔 忒 搜啦"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-15",
+        "index": 16,
+        "startMs": 203000,
+        "endMs": 213000,
+        "raw": "肩をちましょう砕けた カエンディング 飛びながけ",
+        "kana": "かた を ち ましょ う くだけ た カエンディング ひ びな が け",
+        "romaji": "kata o chi masho u kudake ta kaendeingu hi bina ga ke",
+        "chinesePhonetic": "卡塔 哦 七 吗秀 乌 苦达科 塔 卡诶嗯得伊嗯古 嘻 比那 嘎 科"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-16",
+        "index": 17,
+        "startMs": 213000,
+        "endMs": 231000,
+        "raw": "無理さ間違えたとに 想れはしないでも 僕の台 価値を捨てようだから サイズトムスターメト",
+        "kana": "むり さ まちがえ た と に そう れ は し ない でも ぼく の だい かち を すてよう だ から サイズトムスターメト",
+        "romaji": "muri sa machigae ta to ni so re wa shi nai demo boku no dai kachi o suteyo da kara saizutomusutameto",
+        "chinesePhonetic": "木哩 萨 吗七嘎诶 塔 托 你 搜 蕾 哇 西 那伊 得莫 波苦 诺 达伊 卡七 哦 苏忒哟 达 卡啦 萨伊祖托木苏塔美托"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-17",
+        "index": 18,
+        "startMs": 231000,
+        "endMs": 246000,
+        "raw": "Dumpingon your changing mind 可能なとあった日々 君の夢が横で連れても",
+        "kana": "Dumpingon your changing mind かのう な と あった ひび きみ の ゆめ が よこ で つれ て も",
+        "romaji": "Dumpingon your changing mind kano na to atta hibi kimi no yume ga yoko de tsure te mo",
+        "chinesePhonetic": "d乌m皮嗯购嗯 哟乌r 恰嗯吉嗯g 米嗯d 卡诺 那 托 啊克塔 嘻比 基米 诺 优美 嘎 哟口 得 次蕾 忒 莫"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-18",
+        "index": 19,
+        "startMs": 246000,
+        "endMs": 257000,
+        "raw": "Dumpingon your changing mind 可能なとあった日々 君の夢が横で連れても",
+        "kana": "Dumpingon your changing mind かのう な と あった ひび きみ の ゆめ が よこ で つれ て も",
+        "romaji": "Dumpingon your changing mind kano na to atta hibi kimi no yume ga yoko de tsure te mo",
+        "chinesePhonetic": "d乌m皮嗯购嗯 哟乌r 恰嗯吉嗯g 米嗯d 卡诺 那 托 啊克塔 嘻比 基米 诺 优美 嘎 哟口 得 次蕾 忒 莫"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-19",
+        "index": 20,
+        "startMs": 257000,
+        "endMs": 259000,
+        "raw": "(音楽)",
+        "kana": "( おんがく )",
+        "romaji": "( ongaku )",
+        "chinesePhonetic": "( 哦嗯嘎苦 )"
+      },
+      {
+        "id": "0057e79c-12fa-4f76-bcd2-9e2191d65a57-20",
+        "index": 21,
+        "startMs": 259000,
+        "endMs": 262960,
+        "raw": "[音楽]",
+        "kana": "[ おんがく ]",
+        "romaji": "[ ongaku ]",
+        "chinesePhonetic": "哦嗯嘎苦"
+      }
+    ]
+  },
+  {
+    "id": "12f0e838-e403-4978-882f-65521e62588e",
+    "title": "ninelie-Aimer.chelly#gfmgO",
+    "artist": "上传音频",
+    "sourceType": "upload",
+    "fileName": "yDR044FfvS54738ebe0d5b80a91cacd1d89842db5915.mp3",
+    "audioUrl": "/uploads/1776331155065-yDR044FfvS54738ebe0d5b80a91cacd1d89842db5915.mp3",
+    "createdAt": "2026-04-16T09:19:19.890Z",
+    "durationMs": 262960,
+    "durationLabel": "04:23",
+    "excerpt": "君を繋ぐ空の星が一つ音を立てても",
+    "lyricLines": [
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-1",
+        "index": 1,
+        "startMs": 22000,
+        "endMs": 32000,
+        "raw": "君を繋ぐ空の星が一つ音を立てても",
+        "kana": "きみ を つなぐ そら の ほし が ひとつ おん を たて て も",
+        "romaji": "kimi o tsunagu sora no hoshi ga hitotsu on o tate te mo",
+        "chinesePhonetic": "基米 哦 次那古 搜啦 诺 吼西 嘎 嘻托次 哦嗯 哦 塔忒 忒 莫"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-2",
+        "index": 2,
+        "startMs": 33000,
+        "endMs": 49000,
+        "raw": "どこに同じ雨に向けた夢ばかり乾くだけを泣いてもまず",
+        "kana": "どこ に おなじ あめ に むけ た ゆめ ばかり かわく だけ を ない て も まず",
+        "romaji": "doko ni onaji ame ni muke ta yume bakari kawaku dake o nai te mo mazu",
+        "chinesePhonetic": "多口 你 哦那机 啊美 你 木科 塔 优美 吧卡哩 卡哇苦 达科 哦 那伊 忒 莫 吗祖"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-3",
+        "index": 3,
+        "startMs": 50000,
+        "endMs": 65000,
+        "raw": "答えにつくれた繰り返せない訳に崩れたさ",
+        "kana": "こたえ に つくれ た くりかえせ ない わけ に くずれ た さ",
+        "romaji": "kotae ni tsukure ta kurikaese nai wake ni kuzure ta sa",
+        "chinesePhonetic": "口塔诶 你 次苦蕾 塔 苦哩卡诶塞 那伊 哇科 你 苦祖蕾 塔 萨"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-4",
+        "index": 4,
+        "startMs": 65000,
+        "endMs": 77000,
+        "raw": "つかまえたディーチームで遅れたストリート影響がどこへ叫びと泣いても",
+        "kana": "つかまえ た ディーチーム で おくれ た ストリート えいきょう が どこ へ さけび と ない て も",
+        "romaji": "tsukamae ta deichimu de okure ta sutorito eikyo ga doko e sakebi to nai te mo",
+        "chinesePhonetic": "次卡吗诶 塔 得伊七木 得 哦苦蕾 塔 苏托哩托 诶伊基哟 嘎 多口 诶 萨科比 托 那伊 忒 莫"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-5",
+        "index": 5,
+        "startMs": 77000,
+        "endMs": 90000,
+        "raw": "あれだとね恋もくくれないだから サイズトムスターメト",
+        "kana": "あれ だ と ね こい も くく れ ない だ から サイズトムスターメト",
+        "romaji": "are da to ne koi mo kuku re nai da kara saizutomusutameto",
+        "chinesePhonetic": "啊蕾 达 托 内 口伊 莫 苦苦 蕾 那伊 达 卡啦 萨伊祖托木苏塔美托"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-6",
+        "index": 6,
+        "startMs": 91000,
+        "endMs": 114000,
+        "raw": "♪~",
+        "kana": "♪~",
+        "romaji": "♪~",
+        "chinesePhonetic": ""
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-7",
+        "index": 7,
+        "startMs": 114000,
+        "endMs": 126000,
+        "raw": "そっとと泣けるのよに甘るいいすが必要としても",
+        "kana": "そっと と なける の よ に あま るい いす が ひつよう として も",
+        "romaji": "sotto to nakeru no yo ni ama rui isu ga hitsuyo toshite mo",
+        "chinesePhonetic": "搜克托 托 那科鲁 诺 哟 你 啊吗 鲁伊 伊苏 嘎 嘻次哟 托西忒 莫"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-8",
+        "index": 8,
+        "startMs": 126000,
+        "endMs": 137000,
+        "raw": "永遠の愛いつわりと同じ出す 手空で並ぶだけの衝動",
+        "kana": "えいえん の あい いつわり と おなじ だす て そら で ならぶ だけ の しょうどう",
+        "romaji": "eien no ai itsuwari to onaji dasu te sora de narabu dake no shodo",
+        "chinesePhonetic": "诶伊诶嗯 诺 啊伊 伊次哇哩 托 哦那机 达苏 忒 搜啦 得 那啦不 达科 诺 秀多"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-9",
+        "index": 9,
+        "startMs": 137000,
+        "endMs": 147000,
+        "raw": "あ転を中に揃えたりやだし",
+        "kana": "あ てん を なか に そろえ たり や だし",
+        "romaji": "a ten o naka ni soroe tari ya dashi",
+        "chinesePhonetic": "啊 忒嗯 哦 那卡 你 搜咯诶 塔哩 呀 达西"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-10",
+        "index": 10,
+        "startMs": 147000,
+        "endMs": 157000,
+        "raw": "ずっと甘ちさらしいこんなか知り残る",
+        "kana": "ずっと あま ちさ らしい こんな か しり のこる",
+        "romaji": "zutto ama chisa rashii konna ka shiri nokoru",
+        "chinesePhonetic": "祖克托 啊吗 七萨 啦西伊 口嗯那 卡 西哩 诺口鲁"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-11",
+        "index": 11,
+        "startMs": 157000,
+        "endMs": 169000,
+        "raw": "Dumpingon your changing mind 可能なとあった日々 君の夢が横で連れても",
+        "kana": "Dumpingon your changing mind かのう な と あった ひび きみ の ゆめ が よこ で つれ て も",
+        "romaji": "Dumpingon your changing mind kano na to atta hibi kimi no yume ga yoko de tsure te mo",
+        "chinesePhonetic": "d乌m皮嗯购嗯 哟乌r 恰嗯吉嗯g 米嗯d 卡诺 那 托 啊克塔 嘻比 基米 诺 优美 嘎 哟口 得 次蕾 忒 莫"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-12",
+        "index": 12,
+        "startMs": 169000,
+        "endMs": 181000,
+        "raw": "僕の歌いはしばかけようだからサイズトムスターメト",
+        "kana": "ぼく の うたい は しば かけよう だ から サイズトムスターメト",
+        "romaji": "boku no utai wa shiba kakeyo da kara saizutomusutameto",
+        "chinesePhonetic": "波苦 诺 乌塔伊 哇 西吧 卡科哟 达 卡啦 萨伊祖托木苏塔美托"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-13",
+        "index": 13,
+        "startMs": 184000,
+        "endMs": 195000,
+        "raw": "どこまでも硬かみそったりするすぎた街なみは 終わりの愛と遠くへ",
+        "kana": "どこ まで も かた かみ そっ たり する すぎ た まち なみ は おわり の あい と とおく へ",
+        "romaji": "doko made mo kata kami sotsu tari suru sugi ta machi nami wa owari no ai to toku e",
+        "chinesePhonetic": "多口 吗得 莫 卡塔 卡米 搜次 塔哩 苏鲁 苏吉 塔 吗七 那米 哇 哦哇哩 诺 啊伊 托 托苦 诶"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-14",
+        "index": 14,
+        "startMs": 195000,
+        "endMs": 203000,
+        "raw": "伝えれない刻みかけのイメージに 目が覚めた手空",
+        "kana": "つたえ れ ない きざみ かけ の イメージ に め が さめ た て そら",
+        "romaji": "tsutae re nai kizami kake no imeji ni me ga same ta te sora",
+        "chinesePhonetic": "次塔诶 蕾 那伊 基杂米 卡科 诺 伊美机 你 美 嘎 萨美 塔 忒 搜啦"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-15",
+        "index": 15,
+        "startMs": 203000,
+        "endMs": 213000,
+        "raw": "肩をちましょう砕けた カエンディング 飛びながけ",
+        "kana": "かた を ち ましょ う くだけ た カエンディング ひ びな が け",
+        "romaji": "kata o chi masho u kudake ta kaendeingu hi bina ga ke",
+        "chinesePhonetic": "卡塔 哦 七 吗秀 乌 苦达科 塔 卡诶嗯得伊嗯古 嘻 比那 嘎 科"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-16",
+        "index": 16,
+        "startMs": 213000,
+        "endMs": 231000,
+        "raw": "無理さ間違えたとに 想れはしないでも 僕の台 価値を捨てようだから サイズトムスターメト",
+        "kana": "むり さ まちがえ た と に そう れ は し ない でも ぼく の だい かち を すてよう だ から サイズトムスターメト",
+        "romaji": "muri sa machigae ta to ni so re wa shi nai demo boku no dai kachi o suteyo da kara saizutomusutameto",
+        "chinesePhonetic": "木哩 萨 吗七嘎诶 塔 托 你 搜 蕾 哇 西 那伊 得莫 波苦 诺 达伊 卡七 哦 苏忒哟 达 卡啦 萨伊祖托木苏塔美托"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-17",
+        "index": 17,
+        "startMs": 231000,
+        "endMs": 246000,
+        "raw": "Dumpingon your changing mind 可能なとあった日々 君の夢が横で連れても",
+        "kana": "Dumpingon your changing mind かのう な と あった ひび きみ の ゆめ が よこ で つれ て も",
+        "romaji": "Dumpingon your changing mind kano na to atta hibi kimi no yume ga yoko de tsure te mo",
+        "chinesePhonetic": "d乌m皮嗯购嗯 哟乌r 恰嗯吉嗯g 米嗯d 卡诺 那 托 啊克塔 嘻比 基米 诺 优美 嘎 哟口 得 次蕾 忒 莫"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-18",
+        "index": 18,
+        "startMs": 246000,
+        "endMs": 257000,
+        "raw": "Dumpingon your changing mind 可能なとあった日々 君の夢が横で連れても",
+        "kana": "Dumpingon your changing mind かのう な と あった ひび きみ の ゆめ が よこ で つれ て も",
+        "romaji": "Dumpingon your changing mind kano na to atta hibi kimi no yume ga yoko de tsure te mo",
+        "chinesePhonetic": "d乌m皮嗯购嗯 哟乌r 恰嗯吉嗯g 米嗯d 卡诺 那 托 啊克塔 嘻比 基米 诺 优美 嘎 哟口 得 次蕾 忒 莫"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-19",
+        "index": 19,
+        "startMs": 257000,
+        "endMs": 259000,
+        "raw": "(音楽)",
+        "kana": "( おんがく )",
+        "romaji": "( ongaku )",
+        "chinesePhonetic": "( 哦嗯嘎苦 )"
+      },
+      {
+        "id": "12f0e838-e403-4978-882f-65521e62588e-20",
+        "index": 20,
+        "startMs": 259000,
+        "endMs": 262960,
+        "raw": "[音楽]",
+        "kana": "[ おんがく ]",
+        "romaji": "[ ongaku ]",
+        "chinesePhonetic": "哦嗯嘎苦"
+      }
+    ]
+  },
+  {
     "id": "6f648fae-772d-456e-9eb8-76365fe72437",
     "title": "c0421a680e494820b36421f181673a7d",
     "artist": "上传音频",
@@ -19,7 +991,7 @@
         "raw": "今何にあなたのことを夢に見る",
         "kana": "いま なに に あなた の こと を ゆめ に みる",
         "romaji": "ima nani ni anata no koto o yume ni miru",
-        "chinesePhonetic": "伊吗 那你 你 啊那塔 诺 口托 哦 优美 你 米鲁"
+        "chinesePhonetic": "伊吗 那你 你 啊那塔 诺 口托 哦 优美 你 米鹿"
       },
       {
         "id": "6f648fae-772d-456e-9eb8-76365fe72437-2",

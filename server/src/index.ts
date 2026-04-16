@@ -47,9 +47,9 @@ interface UpdateLyricLineInput {
 
 function sanitizeTextField(value: unknown, field: string, maxLength: number): string {
   const nextValue = typeof value === 'string' ? value.trim() : ''
-  if (!nextValue) {
-    throw new Error(`${field} 不能为空。`)
-  }
+  // if (!nextValue) {
+  //   throw new Error(`${field} 不能为空。`)
+  // }
 
   return nextValue.slice(0, maxLength)
 }

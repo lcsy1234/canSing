@@ -1,6 +1,7 @@
 import { ScrollView, Slider, Text, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useEffect, useRef, useState } from 'react'
+import { usePullDownRefresh } from '@tarojs/taro'
 
 import { API_ORIGIN, resolveMediaUrl } from '../../constants/api'
 import { fetchRecord, updateRecord } from '../../services/api'
@@ -158,6 +159,9 @@ export default function DetailPage() {
   const [isExportPickerVisible, setIsExportPickerVisible] = useState(false)
   const [selectedExportModes, setSelectedExportModes] = useState<LyricDisplayMode[]>(['phoneticOnly'])
   const audioRef = useRef<any>(null)
+  // 下拉刷新触发时避免闭包拿到旧 recordId
+  const recordIdRef = useRef('')
+  const isRefreshingRef = useRef(false)
   const lastTapRef = useRef<{ lineId: string; at: number }>({ lineId: '', at: 0 })
 
   const loadRecord = async (nextRecordId: string) => {
@@ -172,8 +176,22 @@ export default function DetailPage() {
     }
   }
 
+  const refreshFromServer = async () => {
+    const currentId = recordIdRef.current
+    if (!currentId) return
+    if (isRefreshingRef.current) return
+
+    isRefreshingRef.current = true
+    try {
+      await loadRecord(currentId)
+    } finally {
+      isRefreshingRef.current = false
+    }
+  }
+
   useEffect(() => {
     const current = Taro.getCurrentInstance().router?.params?.id ?? ''
+    recordIdRef.current = current
     setRecordId(current)
   }, [])
 
@@ -184,6 +202,16 @@ export default function DetailPage() {
 
     void loadRecord(recordId)
   }, [recordId])
+
+  usePullDownRefresh(() => {
+    void (async () => {
+      try {
+        await refreshFromServer()
+      } finally {
+        void Taro.stopPullDownRefresh()
+      }
+    })()
+  })
 
   useEffect(() => {
     if (!record) {
@@ -291,6 +319,7 @@ export default function DetailPage() {
     await Taro.navigateTo({
       url: `/pages/lyrics-editor/index?id=${record.id}`
     })
+    await loadRecord(record.id)
   }
 
   const canEditCurrentMode = Boolean(EDITABLE_MODE_LABEL[lyricDisplayMode])
@@ -772,6 +801,16 @@ export default function DetailPage() {
           <ScrollView
             className='detail-lyrics'
             scrollY
+            refresherEnabled={Taro.getEnv() === Taro.ENV_TYPE.WEAPP}
+            onRefresherRefresh={() => {
+              void (async () => {
+                try {
+                  await refreshFromServer()
+                } finally {
+                  void Taro.stopPullDownRefresh()
+                }
+              })()
+            }}
             scrollIntoView={scrollIntoView}
             scrollWithAnimation
             scrollIntoViewAlignment='center'

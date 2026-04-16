@@ -72,15 +72,21 @@
   gap: 10px;
 }
 
+.lyrics-line-card__toggle,
 .lyrics-line-card__insert,
 .lyrics-line-card__remove {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 110px;
+  min-width: 96px;
   height: 52px;
   border-radius: 999px;
   font-size: 18px;
+}
+
+.lyrics-line-card__toggle {
+  background: rgba(237, 229, 248, 0.92);
+  color: #745796;
 }
 
 .lyrics-line-card__insert {
